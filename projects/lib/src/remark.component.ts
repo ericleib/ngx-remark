@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-lib',
+  selector: 'remark',
   template: `
     <p>
-      lib works!
+      remark works!
     </p>
   `,
   styles: [
   ]
 })
-export class LibComponent {
+export class RemarkComponent {
 
 }

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LibComponent } from './lib.component';
+import { RemarkComponent } from './remark.component';
 
-describe('LibComponent', () => {
-  let component: LibComponent;
-  let fixture: ComponentFixture<LibComponent>;
+describe('RemarkComponent', () => {
+  let component: RemarkComponent;
+  let fixture: ComponentFixture<RemarkComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LibComponent]
+      declarations: [RemarkComponent]
     });
-    fixture = TestBed.createComponent(LibComponent);
+    fixture = TestBed.createComponent(RemarkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
