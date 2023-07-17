@@ -9,7 +9,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "paths": {
-      "lib": [
+      "ngx-remark": [
         "dist/lib"
       ]
     },
