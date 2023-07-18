@@ -1,3 +1,13 @@
 <h1>Test application</h1>
 
-<remark></remark>
+<remark [markdown]="markdown">
+
+  <p *remarkTemplate="'paragraph'; let node"
+    [remarkNode]="node" style="color: red;"></p>
+
+  <span *remarkTemplate="'link'; let node" style="color: green;">
+    foo
+    <a [href]="node?.url" [title]="node.title ?? ''" [remarkNode]="node"></a>
+  </span>
+
+</remark>
