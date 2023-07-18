@@ -84,8 +84,8 @@ You can override the templates for any type of element with:
 <remark markdown="# Hello World">
 
   <ng-template remarkTemplate="heading" let-node>
-    <h1 *ngIf="node.depth === 1" [markedNode]="node" style="color: red;"></h1>
-    <h2 *ngIf="node.depth === 2" [markedNode]="node"></h2>
+    <h1 *ngIf="node.depth === 1" [remarkNode]="node" style="color: red;"></h1>
+    <h2 *ngIf="node.depth === 2" [remarkNode]="node"></h2>
     ...
   </ng-template>
 
@@ -97,7 +97,7 @@ In the above example, note the following:
 - The headings of depth 1 are customized with a red color.
 - The `remarkTemplate` attribute must be set to the name of the [MDAST](https://github.com/syntax-tree/mdast) node type.
 - The `let-node` attribute is required to make the `node` variable available in the template. The `node` variable is of type `Node` and can be used to access the properties of the node.
-- Since the heading node might have children (in particular `text` nodes), the `markedNode` directive is used to render the children of the node.
+- Since the heading node might have children (in particular `text` nodes), the `remarkNode` directive is used to render the children of the node.
 
 It is possible to use the structural shorthand syntax for the `remarkTemplate` directive:
 
