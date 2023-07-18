@@ -1,3 +1,6 @@
+[![Build project](https://github.com/ericleib/ngx-remark/actions/workflows/build.yml/badge.svg)](https://github.com/ericleib/ngx-remark/actions/workflows/build.yml)
+[![npm version](https://badge.fury.io/js/ngx-remark.svg)](https://badge.fury.io/js/ngx-remark)
+
 # ngx-remark
 
 This library allows to render Markdown with custom HTML templates in Angular.
