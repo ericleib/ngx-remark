@@ -4,7 +4,7 @@ import { Directive, Input, TemplateRef } from "@angular/core";
   selector: "[remarkTemplate]"
 })
 export class RemarkTemplateDirective {
-  @Input({required: true, alias: "remarkTemplate"}) nodeType!: string;
+  @Input("remarkTemplate") nodeType!: string;
 
   constructor(
     public readonly template: TemplateRef<any>

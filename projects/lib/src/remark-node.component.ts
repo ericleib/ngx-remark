@@ -7,7 +7,7 @@ import { RemarkTemplatesService } from "./remark-templates.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RemarkNodeComponent {
-  @Input({required: true, alias: "remarkNode"}) node: any;
+  @Input("remarkNode") node: any;
 
   constructor(
     public templateService: RemarkTemplatesService

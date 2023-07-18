@@ -15,7 +15,7 @@ import { RemarkTemplatesService } from './remark-templates.service';
 })
 export class RemarkComponent implements OnChanges, AfterContentInit {
   /** The markdown string to render */
-  @Input({required: true}) markdown!: string;
+  @Input() markdown!: string;
   /** Options for the unified plugins */
   @Input() options?: any;
   /** Set this flag to true to display the parsed markdown tree */
