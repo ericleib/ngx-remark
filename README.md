@@ -1,10 +1,16 @@
 # ngx-remark
 
-This library allows to render Markdown formatted text as HTML in Angular.
+This library allows to render Markdown with custom HTML templates in Angular.
 
-Most libraries for rendering Markdown in Angular first transform the Markdown to HTML and then use the `innerHTML` property to render the HTML. The problem of this approach is that there is no way to use Angular components in any part of the generated HTML.
+Most libraries for rendering Markdown in Angular first transform the Markdown to HTML and then use the `innerHTML` attribute to render the HTML. The problem of this approach is that there is no way to use Angular components or directives in any part of the generated HTML.
 
 In contrast, this library uses [Remark](https://remark.js.org/) to parse the Markdown into an abstract syntax tree (AST) and then uses Angular to render the AST as HTML. The `<remark>` component renders all standard Markdown elements with default built-in templates, but it also allows to override the templates for any element.
+
+Typical use cases include:
+
+- Displaying code blocks with a custom code editor.
+- Displaying custom tooltips over certain elements.
+- Allowing custom actions with buttons or links.
 
 
 ## Installation
