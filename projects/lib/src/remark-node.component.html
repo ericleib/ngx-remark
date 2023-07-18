@@ -1,0 +1,74 @@
+
+<!-- For each child, display its custom template or default one -->
+<ng-container *ngFor="let child of node.children">
+  <ng-container *ngTemplateOutlet="templates?.[child.type] ?? defaultTpl; context: { $implicit: child }">
+  </ng-container>
+</ng-container>
+
+<ng-template #defaultTpl let-child>
+
+  <ng-container [ngSwitch]="child.type">
+
+    <!-- Parents -->
+
+    <p *ngSwitchCase="'paragraph'" [remarkNode]="child"></p>
+
+    <ng-container *ngSwitchCase="'heading'" [ngSwitch]="child.depth">
+      <h1 *ngSwitchCase="1" [remarkNode]="child"></h1>
+      <h2 *ngSwitchCase="2" [remarkNode]="child"></h2>
+      <h3 *ngSwitchCase="3" [remarkNode]="child"></h3>
+      <h4 *ngSwitchCase="4" [remarkNode]="child"></h4>
+      <h5 *ngSwitchCase="5" [remarkNode]="child"></h5>
+      <h6 *ngSwitchCase="6" [remarkNode]="child"></h6>
+    </ng-container>
+
+    <blockquote *ngSwitchCase="'blockquote'" [remarkNode]="child"></blockquote>
+
+    <ng-container *ngSwitchCase="'list'">
+      <ul *ngIf="!child.ordered" [remarkNode]="child"></ul>
+      <ol *ngIf="child.ordered" [remarkNode]="child" [start]="child.start"></ol>
+    </ng-container>
+
+    <li *ngSwitchCase="'listItem'" [remarkNode]="child"></li>
+
+    <a *ngSwitchCase="'link'" [href]="child.url" [title]="child.title ?? ''" [remarkNode]="child"></a>
+
+    <em *ngSwitchCase="'emphasis'" [remarkNode]="child"></em>
+
+    <strong *ngSwitchCase="'strong'" [remarkNode]="child"></strong>
+
+    <del *ngSwitchCase="'delete'" [remarkNode]="child"></del>
+
+    <section *ngSwitchCase="'footnotes'" class="footnotes" [remarkNode]="child"></section>
+
+    <table *ngSwitchCase="'table'" [remarkNode]="child"></table>
+
+    <tr *ngSwitchCase="'tableRow'" [remarkNode]="child"></tr>
+
+    <td *ngSwitchCase="'tableCell'" [remarkNode]="child"></td>
+
+
+    <!-- Literals -->
+
+    <code *ngSwitchCase="'inlineCode'">{{ child.value }}</code>
+
+    <pre *ngSwitchCase="'code'" [ngClass]="child.lang"><code>{{ child.value }}</code></pre>
+
+    <div *ngSwitchCase="'html'" [innerHTML]="child.value"></div>
+
+    <ng-container *ngSwitchCase="'text'">{{ child.value }}</ng-container>
+
+    <!-- Nodes -->
+
+    <sup *ngSwitchCase="'footnoteReference'" class="footnote-ref"><a [href]="'#'+child.identifier">{{child.label}}</a></sup>
+
+    <img *ngSwitchCase="'image'" [src]="child.url" [alt]="child.alt ?? ''" [title]="child.title ?? ''" />
+
+    <hr *ngSwitchCase="'thematicBreak'" />
+
+    <br *ngSwitchCase="'break'">
+
+    <b *ngSwitchDefault>Unknown node type: {{ child.type }}</b>
+
+  </ng-container>
+</ng-template>

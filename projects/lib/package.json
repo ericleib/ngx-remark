@@ -1,6 +1,21 @@
 {
   "name": "ngx-remark",
   "version": "0.0.1",
+  "author": {
+    "name": "Eric Leibenguth",
+    "email": "eric.leibenguth@gmail.com",
+    "url": "https://github.com/ericleib",
+    "github": "ericleib",
+    "twitter": "EricLeibenguth"
+  },
+  "description": "Angular component for rendering custom markdown using Remark",
+  "keywords": [
+    "angular",
+    "remark",
+    "unified",
+    "markdown"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^16.1.0",
     "@angular/core": "^16.1.0",
