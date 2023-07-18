@@ -31,7 +31,8 @@
             "polyfills": [
               "zone.js",
               "zone.js/testing"
-            ]
+            ],
+            "karmaConfig": "projects/lib/karma.conf.js"
           }
         }
       }
@@ -128,7 +129,8 @@
             "styles": [
               "projects/demo/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "karmaConfig": "projects/demo/karma.conf.js"
           }
         }
       }
