@@ -40,34 +40,6 @@ import { RemarkModule } from 'ngx-remark';
 export class AppModule { }
 ```
 
-Optionally customize the Remark processing pipeline:
-
-```typescript
-import { RemarkModule } from 'ngx-remark';
-import { unified } from 'unified'
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-
-function customPipeline() {
-  return unified()
-    .use(remarkParse)
-    .use(remarkGfm); // enable GitHub Flavored Markdown
-}
-
-@NgModule({
-  imports: [
-    RemarkModule
-  ],
-  providers: [
-    {provide: REMARK_PROCESSOR, useValue: customPipeline}
-  ]
-})
-export class AppModule { }
-```
-
-The default pipeline is `unified().use(remarkParse)`.
-
-
 ## Usage
 
 Use the `<remark>` component to render Markdown:
@@ -78,7 +50,21 @@ Use the `<remark>` component to render Markdown:
 
 The above renders the HTML will all default templates.
 
-You can override the templates for any type of element with:
+You can customize the Remark processing pipeline with the optional `processor` input (the default is `unified().use(remarkParse)`):
+
+```html
+<remark [markdown]="markdown" [processor]="processor"></remark>
+```
+
+As an example, the following uses the [remark-gfm](https://github.com/remarkjs/remark-gfm) plugin to support GitHub Flavored Markdown:
+
+```typescript
+import { RemarkGfm } from 'remark-gfm';
+
+processor = unified().use(remarkParse).use(RemarkGfm);
+```
+
+You can override the templates for any node type with the `<ng-template>` element and the `remarkTemplate` directive:
 
 ```html
 <remark markdown="# Hello World">
