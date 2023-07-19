@@ -20,6 +20,8 @@ export class RemarkService {
   }
 
   public parse(markdown: string, options?: any): Root {
-    return this.getPipeline(options).parse(markdown);
+    const pipeline = this.getPipeline(options);
+    const tree = pipeline.parse(markdown);
+    return pipeline.runSync(tree);
   }
 }
