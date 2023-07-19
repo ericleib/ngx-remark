@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +9,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm);
 
   markdown = `
   ---

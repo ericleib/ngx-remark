@@ -1,8 +1,9 @@
 import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, TemplateRef } from '@angular/core';
-import { RemarkService } from './remark.service';
 import { RemarkTemplateDirective } from './remark-template.directive';
-import { Root } from 'mdast';
 import { RemarkTemplatesService } from './remark-templates.service';
+import { unified, Processor } from 'unified';
+import remarkParse from 'remark-parse';
+import { Root } from 'mdast';
 
 @Component({
   selector: 'remark',
@@ -16,8 +17,8 @@ import { RemarkTemplatesService } from './remark-templates.service';
 export class RemarkComponent implements OnChanges, AfterContentInit {
   /** The markdown string to render */
   @Input({required: true}) markdown!: string;
-  /** Options for the unified plugins */
-  @Input() options?: any;
+  /** A custom processor to use instead of the default `unified().user(remarkParse)` */
+  @Input() processor?: Processor<Root, Root, Root>;
   /** Set this flag to true to display the parsed markdown tree */
   @Input() debug = false;
 
@@ -36,7 +37,6 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
   }
 
   constructor(
-    private remarkService: RemarkService,
     private remarkTemplatesService: RemarkTemplatesService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -52,17 +52,23 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
     this.updateTemplates();
   }
 
-  parse() {
-    this.tree = this.remarkService.parse(this.markdown, this.options);
-    this.cdr.markForCheck();
-  }
-
   updateTemplates() {
     this.templates = {};
     this.templateQuery?.forEach(
       template => this.templates![template.nodeType] = template.template
     );
     this.parse();
+  }
+
+  getProcessor() {
+    return this.processor ?? unified().use(remarkParse);
+  }
+
+  parse() {
+    const processor = this.getProcessor();
+    const tree = processor.parse(this.markdown);
+    this.tree = processor.runSync(tree);
+    this.cdr.markForCheck();
   }
 
 }
