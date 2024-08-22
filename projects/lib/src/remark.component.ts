@@ -3,7 +3,7 @@ import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
 import { unified, Processor } from 'unified';
 import remarkParse from 'remark-parse';
-import { Root } from 'mdast';
+import { Root, Node } from 'mdast';
 
 @Component({
   selector: 'remark',
@@ -18,7 +18,7 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
   /** The markdown string to render */
   @Input({required: true}) markdown!: string;
   /** A custom processor to use instead of the default `unified().user(remarkParse)` */
-  @Input() processor?: Processor<Root, Root, Root>;
+  @Input() processor?: Processor<Root>;
   /** Set this flag to true to display the parsed markdown tree */
   @Input() debug = false;
 
@@ -26,7 +26,7 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
   @ContentChildren(RemarkTemplateDirective)
   templateQuery?: QueryList<RemarkTemplateDirective>;
 
-  tree?: Root;
+  tree?: Node;
 
   get templates() {
     return this.remarkTemplatesService.templates;
