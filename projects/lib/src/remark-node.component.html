@@ -1,6 +1,6 @@
 
 <!-- For each child, display its custom template or default one -->
-<ng-container *ngFor="let child of node.children">
+<ng-container *ngFor="let child of children; trackBy: trackBy">
   <ng-container *ngTemplateOutlet="templates?.[child.type] ?? defaultTpl; context: { $implicit: child }">
   </ng-container>
 </ng-container>
