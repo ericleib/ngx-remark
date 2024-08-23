@@ -1,6 +1,6 @@
 {
   "name": "ngx-remark",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": {
     "name": "Eric Leibenguth",
     "email": "eric.leibenguth@gmail.com",
@@ -20,7 +20,7 @@
   "peerDependencies": {
     "@angular/common": "^17.0.0",
     "@angular/core": "^17.0.0",
-    "remark": "^15.0.0"
+    "remark": "^15.0.1"
   },
   "dependencies": {
     "tslib": "^2.6.0"

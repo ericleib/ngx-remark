@@ -31,11 +31,13 @@ describe('RemarkComponent', () => {
 
 @Component({
   template: `
-  <remark markdown="# Hello world!">
+  <remark [markdown]="markdown">
     <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
   </remark>`,
 })
-class TestHostComponent {}
+class TestHostComponent {
+  markdown = '# Hello world!';
+}
 
 
 describe('RemarkComponent with remarkTemplate', () => {
@@ -60,4 +62,30 @@ describe('RemarkComponent with remarkTemplate', () => {
     expect(compiled.querySelector('h1')).toBeFalsy();
     expect(compiled.querySelector('h6')?.textContent).toContain('Hello world!');
   });
+  
+  it('should update text and add paragraph', () => {
+    const el = fixture.nativeElement.querySelector('h6');
+    component.markdown = 
+`# Hello there!
+This is a paragraph`;
+    fixture.detectChanges();
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(compiled.querySelector('h1')).toBeFalsy();
+    expect(compiled.querySelector('h6')?.textContent).toContain('Hello there!');
+    expect(compiled.querySelector('h6')).toBe(el); // The element should be reused
+    expect(compiled.querySelector('p')?.textContent).toContain('This is a paragraph');
+  });
+
+  it('should modify the html', () => {
+    const el = fixture.nativeElement.querySelector('h6');
+    component.markdown = 
+`This is a paragraph
+# Hello there!`;
+    fixture.detectChanges();
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(compiled.querySelector('h1')).toBeFalsy();
+    expect(compiled.querySelector('h6')?.textContent).toContain('Hello there!');
+    expect(compiled.querySelector('h6')).not.toBe(el); // The element should not be reused because it is at a different position
+    expect(compiled.querySelector('p')?.textContent).toContain('This is a paragraph');
+  })
 });
