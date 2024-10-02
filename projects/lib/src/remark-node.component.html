@@ -29,7 +29,7 @@
       <ol *ngIf="child.ordered" [remarkNode]="child" [start]="child.start"></ol>
     </ng-container>
 
-    <li *ngSwitchCase="'listItem'" [remarkNode]="child"></li>
+    <li *ngSwitchCase="'listItem'" [remarkNode]="!$any(node).loose && child.children.length === 1 && child.children[0].children ? child.children[0] : child"></li>
 
     <a *ngSwitchCase="'link'" [href]="child.url" [title]="child.title ?? ''" [remarkNode]="child"></a>
 

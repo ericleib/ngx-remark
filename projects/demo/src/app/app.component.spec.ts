@@ -35,7 +35,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(Array.from(compiled.querySelectorAll('p')).length).toBe(30);
+    expect(Array.from(compiled.querySelectorAll('p')).length).toBe(18);
     expect(
       Array.from(compiled.querySelectorAll('p')).every(
         (p) => p.style.color === 'red'
