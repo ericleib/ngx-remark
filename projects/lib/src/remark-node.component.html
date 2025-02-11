@@ -41,10 +41,27 @@
 
     <section *ngSwitchCase="'footnotes'" class="footnotes" [remarkNode]="child"></section>
 
-    <table *ngSwitchCase="'table'" [remarkNode]="child"></table>
+    <table *ngSwitchCase="'table'">
+      <thead>
+        <tr *ngIf="child.children[0] as row">
+          <th *ngFor="let cell of row.children; trackBy: trackBy; let i=index"
+            [remarkNode]="cell"
+            [ngStyle]="{'text-align': child.align?.[i]}">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of child.children.slice(1); trackBy: trackBy">
+          <td *ngFor="let cell of $any(row).children; trackBy: trackBy; let i=index"
+            [remarkNode]="cell"
+            [ngStyle]="{'text-align': child.align?.[i]}">
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
+    <!-- These node types should not occur outside of a table, but just in case... -->
     <tr *ngSwitchCase="'tableRow'" [remarkNode]="child"></tr>
-
     <td *ngSwitchCase="'tableCell'" [remarkNode]="child"></td>
 
 
