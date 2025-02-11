@@ -28,7 +28,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('table tr td')?.textContent).toContain('Option');
+    expect(compiled.querySelector('table tr th')?.textContent).toContain('Option');
   });
 
   it('should render red paragraphs', () => {
@@ -57,5 +57,17 @@ describe('AppComponent', () => {
         );
       })
     ).toBeTrue();
+  });
+
+  it('should render tables with tbody and thead', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('table thead tr th')).toBeTruthy();
+    expect(compiled.querySelector('table thead tr td')).toBeFalsy();
+    expect(compiled.querySelector('table tbody tr th')).toBeFalsy();
+    expect(compiled.querySelector('table tbody tr td')).toBeTruthy();
+    expect((compiled.querySelector('table tbody tr td:first-child') as any)?.style.textAlign).toBe('left');
+    expect((compiled.querySelector('table tbody tr td:last-child') as any)?.style.textAlign).toBe('center');
   });
 });

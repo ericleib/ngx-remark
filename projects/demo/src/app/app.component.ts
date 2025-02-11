@@ -115,7 +115,7 @@ export class AppComponent {
   ## Tables
 
   | Option | Description |
-  | ------ | ----------- |
+  | :----- | :---------: |
   | row 1  | Lorem ipsum dolor sit amet, consectetur adipiscing elit. |
   | row 2  | sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. |
   | row 3  | Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. |
