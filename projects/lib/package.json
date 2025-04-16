@@ -1,6 +1,6 @@
 {
   "name": "ngx-remark",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": {
     "name": "Eric Leibenguth",
     "email": "eric.leibenguth@gmail.com",
@@ -18,8 +18,8 @@
   "license": "MIT",
   "repository": "github:ericleib/ngx-remark",
   "peerDependencies": {
-    "@angular/common": "^17.0.0",
-    "@angular/core": "^17.0.0",
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0",
     "remark": "^15.0.1"
   },
   "dependencies": {
