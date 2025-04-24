@@ -1,9 +1,9 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, TemplateRef } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, inject } from '@angular/core';
+import { Node, Root } from 'mdast';
+import remarkParse from 'remark-parse';
+import { Processor, unified } from 'unified';
 import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
-import { unified, Processor } from 'unified';
-import remarkParse from 'remark-parse';
-import { Root, Node } from 'mdast';
 
 @Component({
     selector: 'remark',
@@ -20,6 +20,9 @@ import { Root, Node } from 'mdast';
     standalone: false
 })
 export class RemarkComponent implements OnChanges, AfterContentInit {
+  private remarkTemplatesService = inject(RemarkTemplatesService);
+  private cdr = inject(ChangeDetectorRef);
+
   /** The markdown string to render */
   @Input({required: true}) markdown!: string;
   /** A custom processor to use instead of the default `unified().user(remarkParse)` */
@@ -41,10 +44,6 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
     this.remarkTemplatesService.templates = value;
   }
 
-  constructor(
-    private remarkTemplatesService: RemarkTemplatesService,
-    private cdr: ChangeDetectorRef
-  ) { }
 
   ngOnChanges() {
     if(this.templates) {
