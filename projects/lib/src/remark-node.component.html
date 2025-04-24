@@ -46,7 +46,7 @@
       }
     }
     @case ('listItem') {
-      <li [remarkNode]="!$any(node).loose && child.children.length === 1 && child.children[0].children ? child.children[0] : child"></li>
+      <li [remarkNode]="!$any(node()).loose && child.children.length === 1 && child.children[0].children ? child.children[0] : child"></li>
     }
     @case ('link') {
       <a [href]="child.url" [title]="child.title ?? ''" [remarkNode]="child"></a>

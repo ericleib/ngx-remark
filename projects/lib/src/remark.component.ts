@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, inject } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, inject, input } from '@angular/core';
 import { Node, Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { Processor, unified } from 'unified';
@@ -11,7 +11,7 @@ import { RemarkTemplatesService } from './remark-templates.service';
     @if (tree && templates) {
       <remark-node [remarkNode]="tree"></remark-node>
     }
-    @if (debug) {
+    @if (debug()) {
       <pre><code>{{tree | json }}</code></pre>
     }
     `,
@@ -26,9 +26,9 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
   /** The markdown string to render */
   @Input({required: true}) markdown!: string;
   /** A custom processor to use instead of the default `unified().user(remarkParse)` */
-  @Input() processor?: Processor<Root>;
+  readonly processor = input<Processor<Root>>();
   /** Set this flag to true to display the parsed markdown tree */
-  @Input() debug = false;
+  readonly debug = input(false);
 
   /** Custom templates to override the default rendering components */
   @ContentChildren(RemarkTemplateDirective)
@@ -59,13 +59,13 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
   updateTemplates() {
     this.templates = {};
     this.templateQuery?.forEach(
-      template => this.templates![template.nodeType] = template.template
+      template => this.templates![template.nodeType()] = template.template
     );
     this.parse();
   }
 
   getProcessor() {
-    return this.processor ?? unified().use(remarkParse);
+    return this.processor() ?? unified().use(remarkParse);
   }
 
   parse() {
