@@ -3,10 +3,10 @@ import { Node, Parent } from "mdast";
 import { RemarkTemplatesService } from "./remark-templates.service";
 
 @Component({
-    selector: "remark-node, [remarkNode]",
-    templateUrl: "./remark-node.component.html",
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: "remark-node, [remarkNode]",
+  templateUrl: "./remark-node.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class RemarkNodeComponent {
   templateService = inject(RemarkTemplatesService);
@@ -23,5 +23,5 @@ export class RemarkNodeComponent {
 
   // Tracking by index means that DOM elements are reused even when the node type and content is different
   // Changes should still be reflected because of the @Input() node binding
-  trackBy: TrackByFunction<Node> = (index, node) => index;
+  trackBy: TrackByFunction<Node> = (index) => index;
 }

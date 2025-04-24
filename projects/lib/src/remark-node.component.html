@@ -6,7 +6,6 @@
 }
 
 <ng-template #defaultTpl let-child>
-
   @switch (child.type) {
     <!-- Parents -->
     @case ('paragraph') {
@@ -124,8 +123,8 @@
     @case ('break') {
       <br>
       }
-      @default {
-        <b>Unknown node type: {{ child.type }}</b>
-      }
+    @default {
+      <b>Unknown node type: {{ child.type }}</b>
     }
-  </ng-template>
+  }
+</ng-template>

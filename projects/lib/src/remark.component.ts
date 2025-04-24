@@ -7,18 +7,18 @@ import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
 
 @Component({
-    selector: 'remark',
-    template: `
+  selector: 'remark',
+  template: `
     @if (tree && templates) {
       <remark-node [remarkNode]="tree"></remark-node>
     }
     @if (debug()) {
       <pre><code>{{tree | json }}</code></pre>
     }
-    `,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [RemarkTemplatesService],
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RemarkTemplatesService],
+  standalone: false
 })
 export class RemarkComponent implements OnChanges, AfterContentInit {
   private remarkTemplatesService = inject(RemarkTemplatesService);

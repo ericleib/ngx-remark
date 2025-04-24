@@ -30,11 +30,12 @@ describe('RemarkComponent', () => {
 });
 
 @Component({
-    template: `
-  <remark [markdown]="markdown">
-    <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
-  </remark>`,
-    standalone: false
+  template: `
+    <remark [markdown]="markdown">
+      <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
+    </remark>
+  `,
+  standalone: false
 })
 class TestHostComponent {
   markdown = '# Hello world!';
