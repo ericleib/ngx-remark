@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction, inject, input } from "@angular/core";
-import { RemarkTemplatesService } from "./remark-templates.service";
 import { Node, Parent } from "mdast";
+import { RemarkTemplatesService } from "./remark-templates.service";
 
 @Component({
     selector: "remark-node, [remarkNode]",
@@ -12,11 +12,6 @@ export class RemarkNodeComponent {
   templateService = inject(RemarkTemplatesService);
 
   readonly node = input.required<Node>({ alias: "remarkNode" });
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() {}
 
   get children() {
     return (this.node() as Parent).children;
