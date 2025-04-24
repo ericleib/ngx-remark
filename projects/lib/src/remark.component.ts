@@ -8,9 +8,13 @@ import { Root, Node } from 'mdast';
 @Component({
     selector: 'remark',
     template: `
-    <remark-node *ngIf="tree && templates" [remarkNode]="tree"></remark-node>
-    <pre *ngIf="debug"><code>{{tree | json }}</code></pre>
-  `,
+    @if (tree && templates) {
+      <remark-node [remarkNode]="tree"></remark-node>
+    }
+    @if (debug) {
+      <pre><code>{{tree | json }}</code></pre>
+    }
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [RemarkTemplatesService],
     standalone: false

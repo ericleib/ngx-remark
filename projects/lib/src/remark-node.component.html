@@ -1,91 +1,131 @@
 
 <!-- For each child, display its custom template or default one -->
-<ng-container *ngFor="let child of children; trackBy: trackBy">
+@for (child of children; track trackBy($index, child)) {
   <ng-container *ngTemplateOutlet="templates?.[child.type] ?? defaultTpl; context: { $implicit: child }">
   </ng-container>
-</ng-container>
+}
 
 <ng-template #defaultTpl let-child>
 
-  <ng-container [ngSwitch]="child.type">
-
+  @switch (child.type) {
     <!-- Parents -->
-
-    <p *ngSwitchCase="'paragraph'" [remarkNode]="child"></p>
-
-    <ng-container *ngSwitchCase="'heading'" [ngSwitch]="child.depth">
-      <h1 *ngSwitchCase="1" [remarkNode]="child"></h1>
-      <h2 *ngSwitchCase="2" [remarkNode]="child"></h2>
-      <h3 *ngSwitchCase="3" [remarkNode]="child"></h3>
-      <h4 *ngSwitchCase="4" [remarkNode]="child"></h4>
-      <h5 *ngSwitchCase="5" [remarkNode]="child"></h5>
-      <h6 *ngSwitchCase="6" [remarkNode]="child"></h6>
-    </ng-container>
-
-    <blockquote *ngSwitchCase="'blockquote'" [remarkNode]="child"></blockquote>
-
-    <ng-container *ngSwitchCase="'list'">
-      <ul *ngIf="!child.ordered" [remarkNode]="child"></ul>
-      <ol *ngIf="child.ordered" [remarkNode]="child" [start]="child.start"></ol>
-    </ng-container>
-
-    <li *ngSwitchCase="'listItem'" [remarkNode]="!$any(node).loose && child.children.length === 1 && child.children[0].children ? child.children[0] : child"></li>
-
-    <a *ngSwitchCase="'link'" [href]="child.url" [title]="child.title ?? ''" [remarkNode]="child"></a>
-
-    <em *ngSwitchCase="'emphasis'" [remarkNode]="child"></em>
-
-    <strong *ngSwitchCase="'strong'" [remarkNode]="child"></strong>
-
-    <del *ngSwitchCase="'delete'" [remarkNode]="child"></del>
-
-    <section *ngSwitchCase="'footnotes'" class="footnotes" [remarkNode]="child"></section>
-
-    <table *ngSwitchCase="'table'">
-      <thead>
-        <tr *ngIf="child.children[0] as row">
-          <th *ngFor="let cell of row.children; trackBy: trackBy; let i=index"
-            [remarkNode]="cell"
-            [ngStyle]="{'text-align': child.align?.[i]}">
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of child.children.slice(1); trackBy: trackBy">
-          <td *ngFor="let cell of $any(row).children; trackBy: trackBy; let i=index"
-            [remarkNode]="cell"
-            [ngStyle]="{'text-align': child.align?.[i]}">
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
+    @case ('paragraph') {
+      <p [remarkNode]="child"></p>
+    }
+    @case ('heading') {
+      @switch (child.depth) {
+        @case (1) {
+          <h1 [remarkNode]="child"></h1>
+        }
+        @case (2) {
+          <h2 [remarkNode]="child"></h2>
+        }
+        @case (3) {
+          <h3 [remarkNode]="child"></h3>
+        }
+        @case (4) {
+          <h4 [remarkNode]="child"></h4>
+        }
+        @case (5) {
+          <h5 [remarkNode]="child"></h5>
+        }
+        @case (6) {
+          <h6 [remarkNode]="child"></h6>
+        }
+      }
+    }
+    @case ('blockquote') {
+      <blockquote [remarkNode]="child"></blockquote>
+    }
+    @case ('list') {
+      @if (!child.ordered) {
+        <ul [remarkNode]="child"></ul>
+      }
+      @if (child.ordered) {
+        <ol [remarkNode]="child" [start]="child.start"></ol>
+      }
+    }
+    @case ('listItem') {
+      <li [remarkNode]="!$any(node).loose && child.children.length === 1 && child.children[0].children ? child.children[0] : child"></li>
+    }
+    @case ('link') {
+      <a [href]="child.url" [title]="child.title ?? ''" [remarkNode]="child"></a>
+    }
+    @case ('emphasis') {
+      <em [remarkNode]="child"></em>
+    }
+    @case ('strong') {
+      <strong [remarkNode]="child"></strong>
+    }
+    @case ('delete') {
+      <del [remarkNode]="child"></del>
+    }
+    @case ('footnotes') {
+      <section class="footnotes" [remarkNode]="child"></section>
+    }
+    @case ('table') {
+      <table>
+        <thead>
+          @if (child.children[0]; as row) {
+            <tr>
+              @for (cell of row.children; track trackBy(i, cell); let i = $index) {
+                <th
+                  [remarkNode]="cell"
+                  [ngStyle]="{'text-align': child.align?.[i]}">
+                </th>
+              }
+            </tr>
+          }
+        </thead>
+        <tbody>
+          @for (row of child.children.slice(1); track trackBy($index, row)) {
+            <tr>
+              @for (cell of $any(row).children; track trackBy(i, cell); let i = $index) {
+                <td
+                  [remarkNode]="cell"
+                  [ngStyle]="{'text-align': child.align?.[i]}">
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
     <!-- These node types should not occur outside of a table, but just in case... -->
-    <tr *ngSwitchCase="'tableRow'" [remarkNode]="child"></tr>
-    <td *ngSwitchCase="'tableCell'" [remarkNode]="child"></td>
-
-
+    @case ('tableRow') {
+      <tr [remarkNode]="child"></tr>
+    }
+    @case ('tableCell') {
+      <td [remarkNode]="child"></td>
+    }
     <!-- Literals -->
-
-    <code *ngSwitchCase="'inlineCode'">{{ child.value }}</code>
-
-    <pre *ngSwitchCase="'code'" [ngClass]="child.lang"><code>{{ child.value }}</code></pre>
-
-    <div *ngSwitchCase="'html'" [innerHTML]="child.value"></div>
-
-    <ng-container *ngSwitchCase="'text'">{{ child.value }}</ng-container>
-
+    @case ('inlineCode') {
+      <code>{{ child.value }}</code>
+    }
+    @case ('code') {
+      <pre [ngClass]="child.lang"><code>{{ child.value }}</code></pre>
+    }
+    @case ('html') {
+      <div [innerHTML]="child.value"></div>
+    }
+    @case ('text') {
+      {{ child.value }}
+    }
     <!-- Nodes -->
-
-    <sup *ngSwitchCase="'footnoteReference'" class="footnote-ref"><a [href]="'#'+child.identifier">{{child.label}}</a></sup>
-
-    <img *ngSwitchCase="'image'" [src]="child.url" [alt]="child.alt ?? ''" [title]="child.title ?? ''" />
-
-    <hr *ngSwitchCase="'thematicBreak'" />
-
-    <br *ngSwitchCase="'break'">
-
-    <b *ngSwitchDefault>Unknown node type: {{ child.type }}</b>
-
-  </ng-container>
-</ng-template>
+    @case ('footnoteReference') {
+      <sup class="footnote-ref"><a [href]="'#'+child.identifier">{{child.label}}</a></sup>
+    }
+    @case ('image') {
+      <img [src]="child.url" [alt]="child.alt ?? ''" [title]="child.title ?? ''" />
+    }
+    @case ('thematicBreak') {
+      <hr />
+    }
+    @case ('break') {
+      <br>
+      }
+      @default {
+        <b>Unknown node type: {{ child.type }}</b>
+      }
+    }
+  </ng-template>
