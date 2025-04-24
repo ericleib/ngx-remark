@@ -1,7 +1,8 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, inject, input } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, OnChanges, QueryList, inject, input } from '@angular/core';
 import { Node, Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { Processor, unified } from 'unified';
+import type { Compatible } from 'unified/lib';
 import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
 
@@ -24,7 +25,8 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
   private cdr = inject(ChangeDetectorRef);
 
   /** The markdown string to render */
-  @Input({required: true}) markdown!: string;
+  readonly markdown = input.required<Compatible>();
+
   /** A custom processor to use instead of the default `unified().user(remarkParse)` */
   readonly processor = input<Processor<Root>>();
   /** Set this flag to true to display the parsed markdown tree */
@@ -70,7 +72,7 @@ export class RemarkComponent implements OnChanges, AfterContentInit {
 
   parse() {
     const processor = this.getProcessor();
-    const tree = processor.parse(this.markdown);
+    const tree = processor.parse(this.markdown());
     this.tree = processor.runSync(tree);
     this.cdr.markForCheck();
   }
