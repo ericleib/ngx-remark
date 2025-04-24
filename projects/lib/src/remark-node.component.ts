@@ -3,9 +3,10 @@ import { RemarkTemplatesService } from "./remark-templates.service";
 import { Node, Parent } from "mdast";
 
 @Component({
-  selector: "remark-node, [remarkNode]",
-  templateUrl: "./remark-node.component.html",
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: "remark-node, [remarkNode]",
+    templateUrl: "./remark-node.component.html",
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RemarkNodeComponent {
   @Input({required: true, alias: "remarkNode"}) node!: Node;

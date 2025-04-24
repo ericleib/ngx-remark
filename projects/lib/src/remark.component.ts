@@ -6,13 +6,14 @@ import remarkParse from 'remark-parse';
 import { Root, Node } from 'mdast';
 
 @Component({
-  selector: 'remark',
-  template: `
+    selector: 'remark',
+    template: `
     <remark-node *ngIf="tree && templates" [remarkNode]="tree"></remark-node>
     <pre *ngIf="debug"><code>{{tree | json }}</code></pre>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RemarkTemplatesService]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [RemarkTemplatesService],
+    standalone: false
 })
 export class RemarkComponent implements OnChanges, AfterContentInit {
   /** The markdown string to render */
