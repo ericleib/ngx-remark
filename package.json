@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve demo",
+    "start": "npm run build && ng serve demo",
     "build": "ng build lib",
     "postbuild": "copyfiles README.md LICENSE dist/lib",
     "build:demo": "ng build demo",
