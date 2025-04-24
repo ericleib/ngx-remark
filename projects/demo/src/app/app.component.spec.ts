@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { RemarkModule } from 'ngx-remark';
-import { unified } from 'unified';
 import remarkParse from 'remark-parse';
+import { unified } from 'unified';
+import { AppComponent } from './app.component';
+import { RemarkModule } from 'projects/lib/src';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
