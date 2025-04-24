@@ -8,7 +8,7 @@
     "postbuild": "copyfiles README.md LICENSE dist/lib",
     "build:demo": "ng build demo",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI"
+    "test": "npm run build && ng test --no-watch --no-progress --browsers=ChromeHeadlessCI"
   },
   "private": true,
   "dependencies": {
