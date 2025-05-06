@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RemarkComponent } from './remark.component';
 import { RemarkNodeComponent } from './remark-node.component';
 import { RemarkTemplateDirective } from './remark-template.directive';
+import { RemarkComponent } from './remark.component';
 
 describe('RemarkComponent', () => {
   let component: RemarkComponent;
@@ -15,7 +15,7 @@ describe('RemarkComponent', () => {
     });
     fixture = TestBed.createComponent(RemarkComponent);
     component = fixture.componentInstance;
-    component.markdown = "# Hello, world!";
+    fixture.componentRef.setInput('markdown', "# Hello, world!");
     fixture.detectChanges();
   });
 
@@ -31,9 +31,11 @@ describe('RemarkComponent', () => {
 
 @Component({
   template: `
-  <remark [markdown]="markdown">
-    <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
-  </remark>`,
+    <remark [markdown]="markdown">
+      <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
+    </remark>
+  `,
+  standalone: false
 })
 class TestHostComponent {
   markdown = '# Hello world!';

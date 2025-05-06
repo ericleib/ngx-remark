@@ -1,74 +1,51 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, contentChildren, inject, input } from '@angular/core';
+import { Root } from 'mdast';
+import remarkParse from 'remark-parse';
+import { Processor, unified } from 'unified';
+import type { Compatible } from 'unified/lib';
 import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
-import { unified, Processor } from 'unified';
-import remarkParse from 'remark-parse';
-import { Root, Node } from 'mdast';
 
 @Component({
   selector: 'remark',
   template: `
-    <remark-node *ngIf="tree && templates" [remarkNode]="tree"></remark-node>
-    <pre *ngIf="debug"><code>{{tree | json }}</code></pre>
+    @if (tree() && templates()) {
+      <remark-node [remarkNode]="tree()"></remark-node>
+    }
+    @if (debug()) {
+      <pre><code>{{tree() | json }}</code></pre>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RemarkTemplatesService]
+  providers: [RemarkTemplatesService],
+  standalone: false
 })
-export class RemarkComponent implements OnChanges, AfterContentInit {
+export class RemarkComponent {
+  private remarkTemplatesService = inject(RemarkTemplatesService);
+
   /** The markdown string to render */
-  @Input({required: true}) markdown!: string;
+  readonly markdown = input.required<Compatible>();
+
   /** A custom processor to use instead of the default `unified().user(remarkParse)` */
-  @Input() processor?: Processor<Root>;
+  readonly processor = input<Processor<Root>>();
   /** Set this flag to true to display the parsed markdown tree */
-  @Input() debug = false;
+  readonly debug = input(false);
 
   /** Custom templates to override the default rendering components */
-  @ContentChildren(RemarkTemplateDirective)
-  templateQuery?: QueryList<RemarkTemplateDirective>;
+  templateQuery = contentChildren(RemarkTemplateDirective);
 
-  tree?: Node;
+  tree = computed(() => {
+    const processor = this.processor() ?? unified().use(remarkParse);
+    const tree = processor.parse(this.markdown());
+    return processor.runSync(tree);
+  });
 
-  get templates() {
-    return this.remarkTemplatesService.templates;
-  }
-
-  set templates(value) {
-    this.remarkTemplatesService.templates = value;
-  }
-
-  constructor(
-    private remarkTemplatesService: RemarkTemplatesService,
-    private cdr: ChangeDetectorRef
-  ) { }
-
-  ngOnChanges() {
-    if(this.templates) {
-      this.parse();
+  templates = computed(() => {
+    this.remarkTemplatesService.templates = {};
+    for(const template of this.templateQuery()) {
+      this.remarkTemplatesService.templates[template.nodeType()] = template.template
     }
-  }
-
-  ngAfterContentInit() {
-    this.templateQuery?.changes.subscribe(() => this.updateTemplates());
-    this.updateTemplates();
-  }
-
-  updateTemplates() {
-    this.templates = {};
-    this.templateQuery?.forEach(
-      template => this.templates![template.nodeType] = template.template
-    );
-    this.parse();
-  }
-
-  getProcessor() {
-    return this.processor ?? unified().use(remarkParse);
-  }
-
-  parse() {
-    const processor = this.getProcessor();
-    const tree = processor.parse(this.markdown);
-    this.tree = processor.runSync(tree);
-    this.cdr.markForCheck();
-  }
+    return this.remarkTemplatesService.templates;
+  });
 
 }
