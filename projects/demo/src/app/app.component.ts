@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RemarkModule } from 'ngx-remark';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
@@ -7,7 +8,7 @@ import { unified } from 'unified';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false
+  imports: [RemarkModule]
 })
 export class AppComponent {
 
