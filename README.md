@@ -27,17 +27,17 @@ npm install ngx-remark
 
 ## Importing the library
 
-Import the `RemarkModule` in your application module:
+Import the `RemarkModule` in your standalone component or module:
 
 ```typescript
 import { RemarkModule } from 'ngx-remark';
 
-@NgModule({
-  imports: [
-    RemarkModule
-  ]
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  imports: [RemarkModule],
 })
-export class AppModule { }
+export class App { }
 ```
 
 ## Usage
