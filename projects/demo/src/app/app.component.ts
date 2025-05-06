@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
+import { RemarkModule } from 'ngx-remark';
 import remarkGfm from 'remark-gfm';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  imports: [RemarkModule]
 })
 export class AppComponent {
 

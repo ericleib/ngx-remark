@@ -1,12 +1,11 @@
-import { Directive, Input, TemplateRef } from "@angular/core";
+import { Directive, TemplateRef, inject, input } from "@angular/core";
 
 @Directive({
-  selector: "[remarkTemplate]"
+  selector: "[remarkTemplate]",
+  standalone: false
 })
 export class RemarkTemplateDirective {
-  @Input({required: true, alias: "remarkTemplate"}) nodeType!: string;
+  readonly template = inject<TemplateRef<any>>(TemplateRef);
 
-  constructor(
-    public readonly template: TemplateRef<any>
-  ) {}
+  readonly nodeType = input.required<string>({ alias: "remarkTemplate" });
 }

@@ -1,10 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RemarkComponent } from './remark.component';
 import { CommonModule } from '@angular/common';
-import { RemarkTemplateDirective } from './remark-template.directive';
+import { NgModule } from '@angular/core';
 import { RemarkNodeComponent } from './remark-node.component';
-
-
+import { RemarkTemplateDirective } from './remark-template.directive';
+import { RemarkComponent } from './remark.component';
 
 @NgModule({
   imports: [

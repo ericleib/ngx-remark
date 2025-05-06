@@ -1,14 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RemarkModule } from 'ngx-remark';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 
 describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RemarkModule],
-    declarations: [AppComponent]
-  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
