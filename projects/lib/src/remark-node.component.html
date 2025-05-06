@@ -1,6 +1,10 @@
 
-<!-- For each child, display its custom template or default one -->
-@for (child of children; track trackBy($index, child)) {
+<!-- 
+  For each child, display its custom template or default one.
+  Tracking by index means that DOM elements are reused even when the node type and content is different.
+  Changes should still be reflected because of the @Input() node binding.
+ -->
+@for (child of children(); track $index) {
   <ng-container *ngTemplateOutlet="templates?.[child.type] ?? defaultTpl; context: { $implicit: child }">
   </ng-container>
 }
@@ -67,7 +71,7 @@
         <thead>
           @if (child.children[0]; as row) {
             <tr>
-              @for (cell of row.children; track trackBy(i, cell); let i = $index) {
+              @for (cell of row.children; track $index; let i = $index) {
                 <th
                   [remarkNode]="cell"
                   [ngStyle]="{'text-align': child.align?.[i]}">
@@ -77,9 +81,9 @@
           }
         </thead>
         <tbody>
-          @for (row of child.children.slice(1); track trackBy($index, row)) {
+          @for (row of child.children.slice(1); track $index) {
             <tr>
-              @for (cell of $any(row).children; track trackBy(i, cell); let i = $index) {
+              @for (cell of $any(row).children; track $index; let i = $index) {
                 <td
                   [remarkNode]="cell"
                   [ngStyle]="{'text-align': child.align?.[i]}">
