@@ -59,9 +59,11 @@ You can customize the Remark processing pipeline with the optional `processor` i
 As an example, the following uses the [remark-gfm](https://github.com/remarkjs/remark-gfm) plugin to support GitHub Flavored Markdown:
 
 ```typescript
-import { RemarkGfm } from 'remark-gfm';
+import remarkGfm from 'remark-gfm';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
 
-processor = unified().use(remarkParse).use(RemarkGfm);
+processor = unified().use(remarkParse).use(remarkGfm);
 ```
 
 You can override the templates for any node type with the `<ng-template>` element and the `remarkTemplate` directive:
