@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
 
 describe('AppComponent', () => {
 
@@ -14,9 +12,11 @@ describe('AppComponent', () => {
     expect(compiled).toBeTruthy();
   });
 
-  it('should NOT render table', () => {
+  it('should NOT render table', async () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.componentInstance.processor = unified().use(remarkParse);
+    fixture.detectChanges();
+    fixture.componentInstance.form.controls.useGfm.setValue(false);
+    await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
     fixture.detectChanges();
     const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
     expect(compiled.querySelector('table tr td')).toBeNull();

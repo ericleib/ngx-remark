@@ -1,28 +1,33 @@
-<div class="container-fluid h-100">
+<div class="container-fluid h-100" [formGroup]="form">
   <div class="row h-100">
 
     <div class="col-6 h-100 d-flex flex-column overflow-auto pb-3">
       <h3>ngx-remark playground</h3>
       <label class="form-label">Markdown input:</label>
-      <textarea [formControl]="markdownInput" class=" flex-grow-1 form-control"></textarea>
+      <textarea formControlName="markdown" class=" flex-grow-1 form-control"></textarea>
     </div>
     
     <div class="col-6 h-100 d-flex flex-column pb-3">
 
       <div class="d-flex align-items-center">
         <div class="form-check" title="Displays the text in red and shows the number of nodes inside the paragraph">
-          <input class="form-check-input" type="checkbox" [formControl]="customParagraphs" id="customParagraphs">
+          <input class="form-check-input" type="checkbox" formControlName="customParagraphs" id="customParagraphs">
           <label class="form-check-label" for="customParagraphs">Custom paragraphs</label>
         </div>
         
         <div class="form-check ms-3" title="Displays links in green with a link icon">
-          <input class="form-check-input" type="checkbox" [formControl]="customLinks" id="customLinks">
+          <input class="form-check-input" type="checkbox" formControlName="customLinks" id="customLinks">
           <label class="form-check-label" for="customLinks">Custom links</label>
         </div>
         
         <div class="form-check ms-3" title="Displays headings in a custom font style and add a Copy to Clipboard button">
-          <input class="form-check-input" type="checkbox" [formControl]="customHeadings" id="customHeadings">
+          <input class="form-check-input" type="checkbox" formControlName="customHeadings" id="customHeadings">
           <label class="form-check-label" for="customHeadings">Custom headings</label>
+        </div>
+        
+        <div class="form-check ms-3" title="Enable Github Flavored Markdown syntax">
+          <input class="form-check-input" type="checkbox" formControlName="useGfm" id="useGfm">
+          <label class="form-check-label" for="useGfm">GFM</label>
         </div>
 
         <h3>&nbsp;</h3>
@@ -34,18 +39,18 @@
       <label class="form-label">Rendered output:</label>
 
       <div class="border rounded flex-grow-1 p-3 overflow-auto">
-        @if(markdown$ | async; as markdown) {
+        @if(state$ | async; as state) {
         
-          <remark [markdown]="markdown" [processor]="processor" [debug]="true">
+          <remark [markdown]="state.markdown!" [processor]="state.processor">
         
-            @if(customParagraphs.value) {
+            @if(state.customParagraphs) {
               <p *remarkTemplate="'paragraph'; let node">
                 <span [remarkNode]="node" style="color: red;"></span>
                 <span class="text-muted small ms-2 fst-italic">({{node.children.length}} children)</span>
               </p>
             }
 
-            @if(customLinks.value) {
+            @if(state.customLinks) {
               <span *remarkTemplate="'link'; let node">
                 🔗<a [href]="node?.url"
                       [title]="node.title ?? ''"
@@ -55,7 +60,7 @@
               </span>
             }
 
-            @if(customHeadings.value) {
+            @if(state.customHeadings) {
               <ng-template [remarkTemplate]="'heading'" let-node>
                 <div class="custom-heading">
                   <span [remarkNode]="node" class="fs-{{node.depth}}"></span>

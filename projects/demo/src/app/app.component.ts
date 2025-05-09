@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RemarkModule } from 'ngx-remark';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { sampleMarkdown } from './sample';
-import { startWith, throttleTime } from 'rxjs';
+import { map, startWith, throttleTime } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -16,18 +16,23 @@ import { AsyncPipe } from '@angular/common';
 })
 export class AppComponent {
 
-  processor = unified()
-    .use(remarkParse)
-    .use(remarkGfm);
+  form = new FormGroup({
+    customParagraphs: new FormControl(true),
+    customLinks: new FormControl(true),
+    customHeadings: new FormControl(false),
+    markdown: new FormControl(sampleMarkdown, {nonNullable: true}),
+    useGfm: new FormControl(true),
+  });
 
-  markdownInput = new FormControl(sampleMarkdown);
-  customParagraphs = new FormControl(true);
-  customLinks = new FormControl(true);
-  customHeadings = new FormControl(false);
-
-  markdown$ = this.markdownInput.valueChanges.pipe(
-    startWith(sampleMarkdown),
-    throttleTime(200, undefined, {trailing: true, leading: true})
+  state$ = this.form.valueChanges.pipe(
+    startWith(this.form.value),
+    throttleTime(200, undefined, {trailing: true, leading: true}),
+    map(state => {
+      const processor = state.useGfm?
+        unified().use(remarkParse).use(remarkGfm) :
+        unified().use(remarkParse);
+      return {processor, ...state}
+    })
   )
 
   copyToClipboard(text: string) {
