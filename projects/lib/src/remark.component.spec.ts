@@ -32,13 +32,16 @@ describe('RemarkComponent', () => {
 @Component({
   template: `
     <remark [markdown]="markdown">
-      <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
+      @if(customHeading) {
+        <h6 *remarkTemplate="'heading'; let node" [remarkNode]=node></h6>
+      }
     </remark>
   `,
   standalone: false
 })
 class TestHostComponent {
   markdown = '# Hello world!';
+  customHeading = true;
 }
 
 
@@ -90,4 +93,14 @@ This is a paragraph`;
     expect(compiled.querySelector('h6')).not.toBe(el); // The element should not be reused because it is at a different position
     expect(compiled.querySelector('p')?.textContent).toContain('This is a paragraph');
   })
+  
+  it('should render header with h6 and then not', () => {
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(compiled.querySelector('h1')).toBeFalsy();
+    expect(compiled.querySelector('h6')?.textContent).toContain('Hello world!');
+    component.customHeading = false;
+    fixture.detectChanges();
+    expect(compiled.querySelector('h6')).toBeFalsy();
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello world!');
+  });
 });

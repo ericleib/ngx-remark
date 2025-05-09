@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RemarkNodeComponent } from './remark-node.component';
 import { RemarkTemplatesService } from './remark-templates.service';
 import { Root } from 'mdast';
+import { signal } from '@angular/core';
 
 function getNode(text: string, heading = 0) {
   return {
@@ -34,6 +35,7 @@ describe('RemarkNodeComponent', () => {
     });
     fixture = TestBed.createComponent(RemarkNodeComponentInit);
     component = fixture.componentInstance;
+    component.templateService.templates = signal({});
   });
 
   describe('with paragraph', () => {

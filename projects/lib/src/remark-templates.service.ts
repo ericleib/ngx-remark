@@ -1,6 +1,6 @@
-import { Injectable, TemplateRef } from "@angular/core";
+import { Injectable, Signal, TemplateRef } from "@angular/core";
 
 @Injectable()
 export class RemarkTemplatesService {
-  templates: {[nodeType: string]: TemplateRef<any>} = {};
+  templates!: Signal<{[nodeType: string]: TemplateRef<any>}>;
 }

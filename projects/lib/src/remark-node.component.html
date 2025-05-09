@@ -5,7 +5,7 @@
   Changes should still be reflected because of the @Input() node binding.
  -->
 @for (child of children(); track $index) {
-  <ng-container *ngTemplateOutlet="templates?.[child.type] ?? defaultTpl; context: { $implicit: child }">
+  <ng-container *ngTemplateOutlet="templates()[child.type] ?? defaultTpl; context: { $implicit: child }">
   </ng-container>
 }
 
@@ -103,16 +103,16 @@
     }
     <!-- Literals -->
     @case ('inlineCode') {
-      <code>{{ child.value }}</code>
+      <code class="language-{{child.lang || 'plain'}}">{{ child.value }}</code>
     }
     @case ('code') {
-      <pre [ngClass]="child.lang"><code>{{ child.value }}</code></pre>
+      <pre><code class="language-{{child.lang || 'plain'}}">{{ child.value }}</code></pre>
     }
     @case ('html') {
       <div [innerHTML]="child.value"></div>
     }
     @case ('text') {
-      {{ child.value }}
+      <span>{{ child.value }}</span>
     }
     <!-- Nodes -->
     @case ('footnoteReference') {
