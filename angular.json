@@ -68,7 +68,8 @@
               "projects/demo/src/styles.scss"
             ],
             "scripts": [],
-            "browser": "projects/demo/src/main.ts"
+            "browser": "projects/demo/src/main.ts",
+            "baseHref": "/ngx-remark/"
           },
           "configurations": {
             "production": {
