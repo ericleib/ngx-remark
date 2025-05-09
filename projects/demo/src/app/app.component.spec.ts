@@ -9,55 +9,52 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
+    expect(compiled).toBeTruthy();
   });
 
   it('should NOT render table', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.componentInstance.processor = unified().use(remarkParse);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
+    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
     expect(compiled.querySelector('table tr td')).toBeNull();
   });
 
   it('should render table (with GFM)', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
+    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
     expect(compiled.querySelector('table tr th')?.textContent).toContain('Option');
   });
 
   it('should render red paragraphs', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
+    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
     expect(Array.from(compiled.querySelectorAll('p')).length).toBe(18);
-    expect(
-      Array.from(compiled.querySelectorAll('p')).every(
-        (p) => p.style.color === 'red'
-      )
-    ).toBeTrue();
+    for(const p of Array.from(compiled.querySelectorAll('p > span:first-child'))) {
+      expect((p as HTMLElement).style.color).toBe('red');
+    }
   });
 
-  it('should render every link wrapped in a green span and preceded by " foo "', () => {
+  it('should render every link wrapped in a green span and preceded by " 🔗"', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(Array.from(compiled.querySelectorAll('a')).length).toBe(1);
-    expect(
-      Array.from(compiled.querySelectorAll('a')).every((link) => {
-        return (
-          link.parentElement?.firstChild?.textContent === ' foo ' &&
-          link.parentElement?.nodeName === 'SPAN' &&
-          link.parentElement?.style.color === 'green'
-        );
-      })
-    ).toBeTrue();
+    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
+    expect(Array.from(compiled.querySelectorAll('a')).length).toBe(2);
+    for(const link of Array.from(compiled.querySelectorAll('a'))) {
+      expect(link.parentElement?.firstChild?.textContent).toBe(' 🔗');
+      expect(link.parentElement?.nodeName).toBe('SPAN');
+      expect(link.style.color).toBe('green');
+    }
   });
 
   it('should render tables with tbody and thead', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
+    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
     expect(compiled.querySelector('table thead tr th')).toBeTruthy();
     expect(compiled.querySelector('table thead tr td')).toBeFalsy();
     expect(compiled.querySelector('table tbody tr th')).toBeFalsy();

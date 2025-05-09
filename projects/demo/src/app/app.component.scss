@@ -1,0 +1,8 @@
+.custom-heading button {
+  opacity: 30%;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.custom-heading:hover button {
+  opacity: 100%;
+}
