@@ -15,13 +15,17 @@ Typical use cases include:
 - Displaying custom tooltips over certain elements.
 - Allowing custom actions with buttons or links.
 
+## Demo
+
+- [Playground](https://ericleib.github.io/ngx-remark/)
+- [Stackblitz](https://stackblitz.com/edit/stackblitz-starters-gah83vcs?file=src%2Fmain.ts)
 
 ## Installation
 
 Install the library with npm:
 
 ```bash
-npm install ngx-remark
+npm install ngx-remark remark
 ```
 
 
