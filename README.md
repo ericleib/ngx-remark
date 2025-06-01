@@ -132,3 +132,101 @@ You can customize various node types by adding as many templates as needed:
 
 </remark>
 ```
+
+
+## Custom Markdown syntax
+
+Rendering custom Markdown syntax requires 2 steps:
+- Parsing the Markdown with a custom [Remark](https://remark.js.org/) processor. The abstract syntax tree (AST) will contain nodes with a custom type (let's say `my-type`). 
+- Rendering the custom nodes with an Angular template, such as: `<span *remarkTemplate="'my-type'; let node">{{node.value}}</span>`.
+
+### Example
+
+We want to support a custom block such as:
+
+```
+:::dropdown  
+Option 1
+Option 2
+Option 3  
+:::
+```
+
+First, we create a custom processor that finds this syntax within the AST:
+
+```typescript
+processor = unified()
+  .use(remarkParse)
+  .use(() => this.plugin);
+
+plugin = (tree: Node) => {
+  visit(tree, 'paragraph', (node: Paragraph, index: number, parent: Parent) => {
+    const firstChild = node.children[0];
+    const lastChild = node.children.at(-1)!;
+    if (
+      firstChild.type === 'text' &&
+      lastChild.type === 'text' &&
+      firstChild.value.startsWith(':::dropdown') &&
+      lastChild.value.trimEnd().endsWith(':::')
+    ) {
+      parent.children[index] = {
+        type: 'dropdown',
+        options: node.children
+          .flatMap((child) =>
+            (child as Text).value
+              .replace(':::dropdown', '')
+              .replace(':::', '')
+              .split('\n')
+          )
+          .filter((c) => c),
+      } as any;
+    }
+    return CONTINUE;
+  });
+};
+```
+
+This custom processor searches for and replaces nodes such as:
+
+```json
+{
+  "type": "paragraph",
+  "children": [
+    {
+      "type": "text",
+      "value": ":::dropdown\nOption 1\nOption 2\nOption 3\n:::"
+    }
+  ]
+}
+```
+
+with:
+
+```json
+{
+  "type": "dropdown",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3"
+  ]
+}
+```
+
+Then, in our Angular application we can render the dropdown with:
+
+```html
+<remark [markdown]="markdown" [processor]="processor">
+  <ng-template [remarkTemplate]="'dropdown'" let-node>
+    <select>
+      @for(option of node.options; track $index) {
+      <option>{{ option }}</option>
+      }
+    </select>
+  </ng-template>
+</remark>
+```
+
+Here's a working example: https://stackblitz.com/edit/stackblitz-starters-emzbbhj4?file=src%2Fmain.ts
+
+
