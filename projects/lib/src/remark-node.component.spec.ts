@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RemarkNodeComponent } from './remark-node.component';
 import { RemarkTemplatesService } from './remark-templates.service';
+import { RemarkComponent } from './remark.component';
+import { RemarkTemplateDirective } from './remark-template.directive';
 import { Root } from 'mdast';
-import { signal } from '@angular/core';
 
 function getNode(text: string, heading = 0) {
   return {
@@ -27,15 +28,23 @@ describe('RemarkNodeComponent', () => {
   let fixture: ComponentFixture<RemarkNodeComponentInit>;
 
   beforeEach(() => {
-    spyOn(RemarkNodeComponentInit.prototype, 'ngOnInit' as any);
-    spyOn(RemarkNodeComponentInit.prototype, 'ngOnChanges' as any);
+    // Create testing module
     TestBed.configureTestingModule({
-      declarations: [RemarkNodeComponentInit],
+      declarations: [RemarkComponent, RemarkNodeComponentInit, RemarkTemplateDirective],
       providers: [RemarkTemplatesService]
     });
+
+    // Create an instance of RemarkComponent, to access an instance of the TemplateService
+    const parentFixture = TestBed.createComponent(RemarkComponent);
+    parentFixture.componentRef.setInput('markdown', '# Hello')
+    parentFixture.detectChanges();
+    
+    // Create an instance of RemarkNodeComponentInit for testing
+    spyOn(RemarkNodeComponentInit.prototype, 'ngOnInit' as any);
+    spyOn(RemarkNodeComponentInit.prototype, 'ngOnChanges' as any);
     fixture = TestBed.createComponent(RemarkNodeComponentInit);
     component = fixture.componentInstance;
-    component.templateService.templates = signal({});
+    component.templateService = parentFixture.componentInstance.remarkTemplatesService;
   });
 
   describe('with paragraph', () => {

@@ -1,0 +1,102 @@
+@if (tree()) {
+  <remark-node [remarkNode]="tree()"></remark-node>
+}
+@if (debug()) {
+  <pre><code>{{tree() | json }}</code></pre>
+}
+
+<p *remarkTemplate="'paragraph'; let node" [remarkNode]="node"></p>
+
+<ng-template [remarkTemplate]="'heading'" let-node>
+  @switch (node.depth) {
+    @case (1) {
+      <h1 [remarkNode]="node"></h1>
+    }
+    @case (2) {
+      <h2 [remarkNode]="node"></h2>
+    }
+    @case (3) {
+      <h3 [remarkNode]="node"></h3>
+    }
+    @case (4) {
+      <h4 [remarkNode]="node"></h4>
+    }
+    @case (5) {
+      <h5 [remarkNode]="node"></h5>
+    }
+    @case (6) {
+      <h6 [remarkNode]="node"></h6>
+    }
+  }
+</ng-template>
+
+<blockquote *remarkTemplate="'blockquote'; let node" [remarkNode]="node"></blockquote>
+
+<ng-template [remarkTemplate]="'list'" let-node>
+  @if (!node.ordered) {
+    <ul [remarkNode]="node"></ul>
+  }
+  @if (node.ordered) {
+    <ol [remarkNode]="node" [start]="node.start"></ol>
+  }
+</ng-template>
+
+<li *remarkTemplate="'listItem'; let node; let parent=parent" [remarkNode]="!parent.loose && node.children.length === 1 && node.children[0].children ? node.children[0] : node"></li>
+
+<a *remarkTemplate="'link'; let node" [href]="node.url" [title]="node.title ?? ''" [remarkNode]="node"></a>
+
+<em *remarkTemplate="'emphasis'; let node" [remarkNode]="node"></em>
+
+<strong *remarkTemplate="'strong'; let node" [remarkNode]="node"></strong>
+
+<del *remarkTemplate="'delete'; let node" [remarkNode]="node"></del>
+
+<section *remarkTemplate="'footnotes'; let node" class="footnotes" [remarkNode]="node"></section>
+
+<table *remarkTemplate="'table'; let node">
+  <thead>
+    @if (node.children[0]; as row) {
+      <tr>
+        @for (cell of row.children; track $index; let i = $index) {
+          <th
+            [remarkNode]="cell"
+            [ngStyle]="{'text-align': node.align?.[i]}">
+          </th>
+        }
+      </tr>
+    }
+  </thead>
+  <tbody>
+    @for (row of node.children.slice(1); track $index) {
+      <tr>
+        @for (cell of $any(row).children; track $index; let i = $index) {
+          <td
+            [remarkNode]="cell"
+            [ngStyle]="{'text-align': node.align?.[i]}">
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>
+
+<!-- These node types should not occur outside of a table, but just in case... -->
+
+<tr *remarkTemplate="'tableRow'; let node" [remarkNode]="node"></tr>
+<td *remarkTemplate="'tableCell'; let node" [remarkNode]="node"></td>
+
+<!-- Literals -->
+
+<code *remarkTemplate="'inlineCode'; let node" class="language-{{node.lang || 'plain'}}">{{ node.value }}</code>
+<pre *remarkTemplate="'code'; let node"><code class="language-{{node.lang || 'plain'}}">{{ node.value }}</code></pre>
+
+<div *remarkTemplate="'html'; let node" [innerHTML]="node.value"></div>
+<span *remarkTemplate="'text'; let node">{{ node.value }}</span>
+
+<sup *remarkTemplate="'footnoteReference'; let node" class="footnote-ref"><a [href]="'#'+node.identifier">{{node.label}}</a></sup>
+
+<img *remarkTemplate="'image'; let node" [src]="node.url" [alt]="node.alt ?? ''" [title]="node.title ?? ''" />
+
+<hr *remarkTemplate="'thematicBreak'" />
+
+<br *remarkTemplate="'break'">

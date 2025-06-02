@@ -11,7 +11,7 @@ describe('RemarkComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RemarkComponent, RemarkNodeComponent]
+      declarations: [RemarkComponent, RemarkNodeComponent, RemarkTemplateDirective]
     });
     fixture = TestBed.createComponent(RemarkComponent);
     component = fixture.componentInstance;
@@ -102,5 +102,28 @@ This is a paragraph`;
     fixture.detectChanges();
     expect(compiled.querySelector('h6')).toBeFalsy();
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello world!');
+  });
+  
+  it('should render a list without paragraphs', () => {
+    component.markdown = `
+- Hello
+- World
+`;
+    fixture.detectChanges();
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(Array.from(compiled.querySelectorAll('li')).length).toBe(2);
+    expect(Array.from(compiled.querySelectorAll('li > p')).length).toBe(0);
+  });
+  
+  it('should render a list item with children with a paragraph', () => {
+    component.markdown = `
+- Hello
+  - test
+- World
+`;
+    fixture.detectChanges();
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(Array.from(compiled.querySelectorAll('li')).length).toBe(3);
+    expect(Array.from(compiled.querySelectorAll('li > p')).length).toBe(1);
   });
 });

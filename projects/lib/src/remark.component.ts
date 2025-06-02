@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, contentChildren, input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, contentChildren, input, TemplateRef, viewChildren } from '@angular/core';
 import { Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { Processor, unified } from 'unified';
@@ -8,14 +8,7 @@ import { RemarkTemplatesService } from './remark-templates.service';
 
 @Component({
   selector: 'remark',
-  template: `
-    @if (tree()) {
-      <remark-node [remarkNode]="tree()"></remark-node>
-    }
-    @if (debug()) {
-      <pre><code>{{tree() | json }}</code></pre>
-    }
-  `,
+  templateUrl: './remark.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RemarkTemplatesService],
   standalone: false
@@ -29,7 +22,8 @@ export class RemarkComponent {
   readonly debug = input(false);
 
   /** Custom templates to override the default rendering components */
-  templateQuery = contentChildren(RemarkTemplateDirective);
+  customTemplateQuery = contentChildren(RemarkTemplateDirective);
+  templateQuery = viewChildren(RemarkTemplateDirective);
 
   tree = computed(() => {
     const processor = this.processor() ?? unified().use(remarkParse);
@@ -43,7 +37,10 @@ export class RemarkComponent {
     remarkTemplatesService.templates = computed(() => {
       const templates: {[nodeType: string]: TemplateRef<any>} = {};
       for(const template of this.templateQuery()) {
-        templates[template.nodeType()] = template.template
+        templates[template.nodeType()] = template.template;
+      }
+      for(const template of this.customTemplateQuery()) {
+        templates[template.nodeType()] = template.template;
       }
       return templates;
     });
