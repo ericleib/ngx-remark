@@ -80,7 +80,7 @@ Indented code:
 
 Block code "fences":
 
-\`\`\`
+\`\`\`javascript
 // Sample comments
 function foo (bar) {
   return bar++;

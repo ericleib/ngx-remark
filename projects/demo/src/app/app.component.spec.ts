@@ -29,16 +29,6 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('table tr th')?.textContent).toContain('Option');
   });
 
-  it('should render red paragraphs', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
-    expect(Array.from(compiled.querySelectorAll('p')).length).toBe(18);
-    for(const p of Array.from(compiled.querySelectorAll('p > span:first-child'))) {
-      expect((p as HTMLElement).style.color).toBe('red');
-    }
-  });
-
   it('should render every link wrapped in a green span and preceded by " 🔗"', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
@@ -61,5 +51,24 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('table tbody tr td')).toBeTruthy();
     expect((compiled.querySelector('table tbody tr td:first-child') as any)?.style.textAlign).toBe('left');
     expect((compiled.querySelector('table tbody tr td:last-child') as any)?.style.textAlign).toBe('center');
+  });
+
+  it('should highlight code', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-prism') as HTMLElement;
+    expect(compiled).toBeTruthy();
+    // the following does not pass because Prismjs is not loaded
+    //expect(compiled.querySelector('span.token.punctuation')).toBeTruthy();
+  });
+
+  it('should NOT highlight code', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.form.controls.codeHighlights.setValue(false);
+    await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-prism');
+    expect(compiled).toBeNull();
   });
 });

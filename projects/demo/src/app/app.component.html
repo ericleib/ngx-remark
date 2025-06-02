@@ -6,32 +6,32 @@
       <label class="form-label">Markdown input:</label>
       <textarea formControlName="markdown" class=" flex-grow-1 form-control"></textarea>
     </div>
-    
+
     <div class="col-6 h-100 d-flex flex-column pb-3">
 
       <div class="d-flex align-items-center">
         <div class="form-check" title="Displays the text in red and shows the number of nodes inside the paragraph">
-          <input class="form-check-input" type="checkbox" formControlName="customParagraphs" id="customParagraphs">
-          <label class="form-check-label" for="customParagraphs">Custom paragraphs</label>
+          <input class="form-check-input" type="checkbox" formControlName="codeHighlights" id="codeHighlights">
+          <label class="form-check-label" for="codeHighlights">Code highlighting</label>
         </div>
-        
+
         <div class="form-check ms-3" title="Displays links in green with a link icon">
           <input class="form-check-input" type="checkbox" formControlName="customLinks" id="customLinks">
           <label class="form-check-label" for="customLinks">Custom links</label>
         </div>
-        
+
         <div class="form-check ms-3" title="Displays headings in a custom font style and add a Copy to Clipboard button">
           <input class="form-check-input" type="checkbox" formControlName="customHeadings" id="customHeadings">
           <label class="form-check-label" for="customHeadings">Custom headings</label>
         </div>
-        
+
         <div class="form-check ms-3" title="Enable Github Flavored Markdown syntax">
           <input class="form-check-input" type="checkbox" formControlName="useGfm" id="useGfm">
           <label class="form-check-label" for="useGfm">GFM</label>
         </div>
 
         <h3>&nbsp;</h3>
-        
+
         <a class="ms-auto" href="https://stackblitz.com/edit/stackblitz-starters-gah83vcs?file=src%2Fmain.ts" target="_blank">Stackblitz</a>
         <a class="ms-3" href="https://github.com/ericleib/ngx-remark/tree/master/projects/demo/src/app" target="_blank">Source</a>
 
@@ -41,14 +41,14 @@
 
       <div class="border rounded flex-grow-1 p-3 overflow-auto">
         @if(state$ | async; as state) {
-        
+
           <remark [markdown]="state.markdown!" [processor]="state.processor">
-        
-            @if(state.customParagraphs) {
-              <p *remarkTemplate="'paragraph'; let node">
-                <span [remarkNode]="node" style="color: red;"></span>
-                <span class="text-muted small ms-2 fst-italic">({{node.children.length}} children)</span>
-              </p>
+
+            @if(state.codeHighlights) {
+              <remark-prism *remarkTemplate="'code'; let node"
+                [code]="node.value"
+                [language]="node.lang">
+              </remark-prism>
             }
 
             @if(state.customLinks) {
@@ -71,7 +71,7 @@
             }
 
           </remark>
-          
+
         }
       </div>
     </div>

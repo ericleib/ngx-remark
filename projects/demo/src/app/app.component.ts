@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RemarkModule } from 'ngx-remark';
+import { PrismComponent, RemarkModule } from 'ngx-remark';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
@@ -12,12 +12,12 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [AsyncPipe, RemarkModule, ReactiveFormsModule]
+  imports: [AsyncPipe, RemarkModule, ReactiveFormsModule, PrismComponent]
 })
 export class AppComponent {
 
   form = new FormGroup({
-    customParagraphs: new FormControl(true),
+    codeHighlights: new FormControl(true),
     customLinks: new FormControl(true),
     customHeadings: new FormControl(false),
     markdown: new FormControl(sampleMarkdown, {nonNullable: true}),

@@ -133,6 +133,73 @@ You can customize various node types by adding as many templates as needed:
 </remark>
 ```
 
+## Plugins
+
+### Code highlighting
+
+Syntax highlighting for code blocks can be enabled by adding [Prismjs](https://prismjs.com/) to your project.
+
+The simplest way to install Prism is by loading stylesheets and scripts from a CDN, for example:
+
+```html
+<head>
+  ...
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+</head>
+<body>
+  <app-root></app-root>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+```
+
+With Prism globally loaded, you can add the `remark-prism` component as a template inside your `remark` component:
+
+```ts
+import { PrismComponent, RemarkModule } from 'ngx-remark';
+
+@Component({
+  ...
+  imports: [..., RemarkModule, PrismComponent]
+})
+```
+
+```html
+<remark [markdown]="markdown">
+  <remark-prism *remarkTemplate="'code'; let node"
+    [code]="node.value"
+    [language]="node.lang">
+  </remark-prism>
+</remark>
+```
+
+You can also nest `remark-prism` inside a more complex component or template (eg. including a "Copy to clipboard" button).
+
+#### Advanced setup
+
+You may also install Prism with `npm i prismjs` and add the scripts and stylesheets to your `angular.json` file.
+
+You may want to avoid to avoid loading the stylesheet globally, as it will add styling to any `<code>` element in your app. One way to scope the styling only to this library is use this trick in your SCSS stylesheet:
+
+```scss
+@use "sass:meta";
+
+remark-prism {
+  @include meta.load-css("node_modules/prismjs/themes/prism-okaidia.css");
+}
+```
+
+If you need the autoloader plugin to work in this context, you will need to add the languages files to your assets with a glob such as:
+
+```json
+{
+  "input": "node_modules/prismjs/components/",
+  "glob": "prism-*.min.js",
+  "output": "components/"
+}
+```
+
+This will add all the ~300 language files to your assets so they can be loaded when needed.
 
 ## Custom Markdown syntax
 

@@ -1,5 +1,11 @@
+@use "sass:meta";
+
 /* You can add global styles to this file, and also import other style files */
 html, body {
   height: 100%;
   width: 100%;
+}
+
+remark-prism {
+  @include meta.load-css("node_modules/prismjs/themes/prism-okaidia.css");
 }

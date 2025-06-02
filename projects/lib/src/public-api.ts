@@ -7,3 +7,4 @@ export * from './remark.component';
 export * from './remark-template.directive';
 export * from './remark-node.component';
 export * from './remark-templates.service';
+export * from './plugins';
