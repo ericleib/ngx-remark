@@ -16,8 +16,8 @@
         </div>
 
         <div class="form-check ms-3" title="Displays links in green with a link icon">
-          <input class="form-check-input" type="checkbox" formControlName="customLinks" id="customLinks">
-          <label class="form-check-label" for="customLinks">Custom links</label>
+          <input class="form-check-input" type="checkbox" formControlName="mathExpressions" id="mathExpressions">
+          <label class="form-check-label" for="mathExpressions">Math expressions</label>
         </div>
 
         <div class="form-check ms-3" title="Displays headings in a custom font style and add a Copy to Clipboard button">
@@ -51,14 +51,9 @@
               </remark-prism>
             }
 
-            @if(state.customLinks) {
-              <span *remarkTemplate="'link'; let node">
-                🔗<a [href]="node?.url"
-                      [title]="node.title ?? ''"
-                      [remarkNode]="node"
-                      style="color: green;">
-                  </a>
-              </span>
+            @if(state.mathExpressions) {
+              <remark-katex *remarkTemplate="'math'; let node" [expr]="node.value" class="d-block mb-3"></remark-katex>
+              <remark-katex *remarkTemplate="'inlineMath'; let node" [expr]="node.value"></remark-katex>
             }
 
             @if(state.customHeadings) {

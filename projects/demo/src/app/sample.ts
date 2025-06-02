@@ -97,6 +97,15 @@ console.log(foo(5));
 | row 2  | sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. |
 | row 3  | Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. |
 
+## Math
+
+Lift ($$L$$) can be derived from the Lift Coefficient ($$C_L$$) with the following
+equation:
+
+$$
+L = \\frac{1}{2} \\rho v^2 S C_L
+$$
+
 ## Links
 
 This is a link: [Example](https://example.com).

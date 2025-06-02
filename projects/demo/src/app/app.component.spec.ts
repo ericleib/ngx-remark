@@ -29,18 +29,6 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('table tr th')?.textContent).toContain('Option');
   });
 
-  it('should render every link wrapped in a green span and preceded by " 🔗"', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement.querySelector('remark') as HTMLElement;
-    expect(Array.from(compiled.querySelectorAll('a')).length).toBe(2);
-    for(const link of Array.from(compiled.querySelectorAll('a'))) {
-      expect(link.parentElement?.firstChild?.textContent).toBe(' 🔗');
-      expect(link.parentElement?.nodeName).toBe('SPAN');
-      expect(link.style.color).toBe('green');
-    }
-  });
-
   it('should render tables with tbody and thead', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
@@ -69,6 +57,25 @@ describe('AppComponent', () => {
     await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
     fixture.detectChanges();
     const compiled = fixture.nativeElement.querySelector('remark-prism');
+    expect(compiled).toBeNull();
+  });
+
+
+  it('should render math', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-katex') as HTMLElement;
+    expect(compiled).toBeTruthy();
+    expect(compiled.querySelector('span.katex-html')).toBeTruthy();
+  });
+
+  it('should NOT render math', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.form.controls.mathExpressions.setValue(false);
+    await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-katex') as HTMLElement;
     expect(compiled).toBeNull();
   });
 });

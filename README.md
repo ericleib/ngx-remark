@@ -3,7 +3,7 @@
 
 # ngx-remark
 
-This library allows to render Markdown with custom HTML templates in Angular.
+This library allows to render Markdown with custom Angular components and templates.
 
 Most libraries for rendering Markdown in Angular first transform the Markdown to HTML and then use the `innerHTML` attribute to render the HTML. The problem of this approach is that there is no way to use Angular components or directives in any part of the generated HTML.
 
@@ -135,6 +135,27 @@ You can customize various node types by adding as many templates as needed:
 
 ## Plugins
 
+### Remark plugins
+
+Remark is a tool that transforms markdown with [plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins).
+
+For example, converting gemoji shortcodes into emoji can be achieved with the [remark-gemoji](https://github.com/remarkjs/remark-gemoji) plugin:
+
+```typescript
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGemoji from 'remark-gemoji';
+
+processor = unified()
+  .use(remarkParse)
+  .use(remarkGemoji);
+```
+
+This particular plugin works out-of-the-box because it does not introduce a new node type in the syntax tree (emojis are just UTF-8 characters).
+
+Other plugins (such as [remark-directive](https://github.com/remarkjs/remark-directive) or [remark-sectionize](https://github.com/jake-low/remark-sectionize)) may introduce node types that must be rendered with an Angular template or component.
+
+
 ### Code highlighting
 
 Syntax highlighting for code blocks can be enabled by adding [Prismjs](https://prismjs.com/) to your project.
@@ -200,6 +221,34 @@ If you need the autoloader plugin to work in this context, you will need to add 
 ```
 
 This will add all the ~300 language files to your assets so they can be loaded when needed.
+
+### Math expressions
+
+Math expressions can be rendered with [KaTeX](https://katex.org/).
+
+This requires three steps:
+- Install KaTeX in your project with `npm i katex remark-math`.
+- Add the `remark-math` plugin to your processor with `processor.use(remarkMath)`
+- Render math expressions with the provided `remark-katex` component:
+
+```ts
+import { RemarkModule, KatexComponent } from 'ngx-remark';
+
+@Component({
+  ...
+  imports: [RemarkModule, KatexComponent]
+})
+```
+
+```html
+<remark [markdown]="markdown" [processor]="processor">
+  <remark-katex *remarkTemplate="'math'; let node" [expr]="node.value"></remark-katex>
+  <remark-katex *remarkTemplate="'inlineMath'; let node" [expr]="node.value"></remark-katex>
+</remark>
+```
+
+In the example above, we make no difference between `math` and `inlineMath` element, but in practice they might require minor styling difference.
+
 
 ## Custom Markdown syntax
 
