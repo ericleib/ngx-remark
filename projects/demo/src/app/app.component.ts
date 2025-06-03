@@ -6,7 +6,7 @@ import { Processor, unified } from 'unified';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkMath from 'remark-math';
-import { KatexComponent, MermaidComponent, PrismComponent, RemarkModule } from 'ngx-remark';
+import { KatexComponent, HeadingComponent, MermaidComponent, PrismComponent, RemarkModule } from 'ngx-remark';
 import { sampleMarkdown } from './sample';
 
 @Component({
@@ -14,14 +14,14 @@ import { sampleMarkdown } from './sample';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [AsyncPipe, RemarkModule, ReactiveFormsModule,
-    PrismComponent, KatexComponent, MermaidComponent]
+    PrismComponent, KatexComponent, MermaidComponent, HeadingComponent]
 })
 export class AppComponent {
 
   form = new FormGroup({
     codeHighlights: new FormControl(true),
     mathExpressions: new FormControl(true),
-    customHeadings: new FormControl(false),
+    customHeadings: new FormControl(true),
     markdown: new FormControl(sampleMarkdown, {nonNullable: true}),
     useGfm: new FormControl(true),
   });
@@ -40,10 +40,4 @@ export class AppComponent {
       return {processor, ...state}
     })
   )
-
-  copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(
-      () => window.alert(`"${text}" copied to clipboard!`)
-    )
-  }
 }

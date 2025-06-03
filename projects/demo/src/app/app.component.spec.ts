@@ -96,4 +96,24 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement.querySelector('remark-mermaid');
     expect(compiled).toBeNull();
   });
+
+  it('should render custom headings', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-heading') as HTMLElement;
+    expect(compiled).toBeTruthy();
+    expect(compiled.querySelector("h1")?.textContent).toBe("h1 Heading");
+    expect(compiled.querySelector("a")?.textContent).toBe("🔗");
+    expect(compiled.querySelector("a")?.href).toContain("#h1-heading");
+  });
+
+  it('should NOT render custom headings', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.form.controls.customHeadings.setValue(false);
+    await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-heading');
+    expect(compiled).toBeNull();
+  });
 });

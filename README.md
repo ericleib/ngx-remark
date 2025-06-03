@@ -303,6 +303,29 @@ If you need the autoloader plugin to work in this context, you will need to add 
 
 This will add all the ~300 language files to your assets so they can be loaded when needed.
 
+### Headings with anchor links
+
+You can render headings with an anchor link with the provided component `remark-heading`:
+
+```ts
+import { RemarkModule, HeadingComponent } from 'ngx-remark';
+
+@Component({
+  ...
+  imports: [..., RemarkModule, HeadingComponent]
+})
+```
+
+and
+
+```html
+<remark [markdown]="markdown">
+  <remark-heading *remarkTemplate="'heading'; let node" [node]="node"></remark-heading>
+</remark>
+```
+
+The `id` is automatically generated from the heading text content.
+
 ### Math expressions
 
 Math expressions can be rendered with [KaTeX](https://katex.org/).
