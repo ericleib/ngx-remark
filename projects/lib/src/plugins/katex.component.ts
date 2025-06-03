@@ -4,7 +4,12 @@ import katex from 'katex';
 
 @Component({
   selector: 'remark-katex',
-  template: `<span [innerHTML]="html()"></span>`,
+  template: `<span [innerHTML]="html()" class="katex-container"></span>`,
+  styles: [`
+    .katex-container {
+      position: relative;
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KatexComponent {
