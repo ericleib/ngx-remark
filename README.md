@@ -163,6 +163,51 @@ Note that we handle 2 types of links:
 
 (In practice, the distinction between the 2 types might be more subtle)
 
+## Cursor symbol
+
+When this component is used to display the output of an LLM in streaming mode, it can be a nice touch to insert a glowing "cursor" symbol at the end of the text.
+
+This can be achieved in 3 steps:
+
+1. Create a plugin to insert a custom node after the last `text` node in the AST:
+
+```ts
+processor.use(() => this.placeholderPlugin);
+
+placeholderPlugin = (tree: Node) => {
+  visit(tree, "text", (node: Text, index: number, parent: Parent) => {
+    parent.children.push({type: "cursor"} as any);
+    return EXIT;
+  }, true);
+  return tree;
+}
+```
+
+2. Add a template to render this component:
+
+```html
+<span *remarkTemplate="'cursor'" [ngClass]="{cursor: streaming}"></span>
+```
+
+3. Add styles to the `.cursor` class:
+
+```css
+.cursor {
+  display: inline-block;
+  height: 1rem;
+  vertical-align: text-bottom;
+  width: 10px;
+  animation: cursor-glow 0.3s ease-in-out infinite;
+  background: grey;
+}
+
+@keyframes cursor-glow {
+  50% {
+    opacity: .2;
+  }
+}
+```
+
 ## Plugins
 
 ### Remark plugins
