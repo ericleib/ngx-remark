@@ -3,7 +3,7 @@
 
 # ngx-remark
 
-This library allows to render Markdown with custom Angular components and templates.
+**ngx-remark** is a library that allows to render Markdown with custom Angular components and templates.
 
 Most libraries for rendering Markdown in Angular first transform the Markdown to HTML and then use the `innerHTML` attribute to render the HTML. The problem of this approach is that there is no way to use Angular components or directives in any part of the generated HTML.
 
@@ -14,6 +14,7 @@ Typical use cases include:
 - Displaying code blocks with a custom code editor.
 - Displaying custom tooltips over certain elements.
 - Allowing custom actions with buttons or links.
+- Integration with Angular features, like the [`Router`](#router-integration).
 
 ## Demo
 
@@ -49,7 +50,7 @@ export class App { }
 Use the `<remark>` component to render Markdown:
 
 ```html
-<remark markdown="# Hello World"></remark>
+<remark markdown="# Hello World"/>
 ```
 
 The above renders the HTML will all default templates.
@@ -132,6 +133,35 @@ You can customize various node types by adding as many templates as needed:
 
 </remark>
 ```
+
+## Router integration
+
+By default, links in the Markdown document are rendered as non-Angular links, ie.:
+
+```html
+<a href="https://google.com"></a>
+```
+
+A common problem is handling links that point to routes in the Angular application. This is a good use-case for ngx-remark:
+
+```html
+<remark [markdown]="markdown">
+  <ng-template [remarkTemplate]="'link'" let-node>
+    @if(node.url.startsWith('https://')) {
+      <a [href]="node.url" target="_blank" [title]="node.title ?? ''" [remarkNode]="node"></a>
+    }
+    @else {
+      <a [routerLink]="node.url" [title]="node.title ?? ''" [remarkNode]="node"></a>
+    }
+  </ng-template>
+</remark>
+```
+
+Note that we handle 2 types of links:
+- External links (starting with `https://`) are rendered with `href` and `target="_blank"`.
+- Internal links use the Angular router
+
+(In practice, the distinction between the 2 types might be more subtle)
 
 ## Plugins
 
@@ -232,8 +262,9 @@ This will add all the ~300 language files to your assets so they can be loaded w
 
 Math expressions can be rendered with [KaTeX](https://katex.org/).
 
-This requires three steps:
+This requires four steps:
 - Install KaTeX in your project with `npm i katex remark-math`.
+- Import the KaTeX stylesheet into your styles (or simply load it from a CDN)
 - Add the `remark-math` plugin to your processor with `processor.use(remarkMath)`
 - Render math expressions with the provided `remark-katex` component:
 
@@ -253,7 +284,7 @@ import { RemarkModule, KatexComponent } from 'ngx-remark';
 </remark>
 ```
 
-In the example above, we make no difference between `math` and `inlineMath` element, but in practice they might require minor styling difference.
+In the example above, we make no difference between `math` and `inlineMath` elements, but in practice they might require minor styling differences.
 
 ### Mermaid diagrams
 
