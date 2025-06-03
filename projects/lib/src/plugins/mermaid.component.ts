@@ -27,7 +27,7 @@ export class MermaidComponent {
 
   async render(code: string, el: ElementRef) {
     try {
-      if(!(window as any).mermaid) {
+      if(!(window as any).mermaid?.render) {
         return "Mermaid is not loaded";
       }
       if(!el.nativeElement.id) {
