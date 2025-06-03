@@ -1,6 +1,6 @@
 {
   "name": "ngx-remark",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": {
     "name": "Eric Leibenguth",
     "email": "eric.leibenguth@gmail.com",
@@ -20,17 +20,7 @@
   "peerDependencies": {
     "@angular/common": ">=19.0.0",
     "@angular/core": ">=19.0.0",
-    "remark": "^15.0.1",
-    "prismjs": "^1.30.0",
-    "katex": "^0.16.22"
-  },
-  "peerDependenciesMeta": {
-    "prismjs": {
-      "optional": true
-    },
-    "katex": {
-      "optional": true
-    }
+    "remark": "^15.0.1"
   },
   "dependencies": {
     "tslib": "^2.6.0"

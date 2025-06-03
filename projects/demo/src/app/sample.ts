@@ -99,12 +99,29 @@ console.log(foo(5));
 
 ## Math
 
-Lift ($$L$$) can be derived from the Lift Coefficient ($$C_L$$) with the following
-equation:
+Aerodynamic forces can be derived from the Lift Coefficient ($$C_L$$) and Drag Coefficient ($$C_D$$) with the following
+equations:
 
 $$
 L = \\frac{1}{2} \\rho v^2 S C_L
 $$
+
+$$
+D = \\frac{1}{2} \\rho v^2 S C_D
+$$
+
+## Mermaid
+
+\`\`\`mermaid
+graph TD
+    A[Enter Chart Definition] --> B(Preview)
+    B --> C{decide}
+    C --> D[Keep]
+    C --> E[Edit Definition]
+    E --> B
+    D --> F[Save Image and Code]
+    F --> B
+\`\`\`
 
 ## Links
 

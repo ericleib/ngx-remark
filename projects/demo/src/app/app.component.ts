@@ -6,14 +6,15 @@ import { Processor, unified } from 'unified';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkMath from 'remark-math';
-import { KatexComponent, PrismComponent, RemarkModule } from 'ngx-remark';
+import { KatexComponent, MermaidComponent, PrismComponent, RemarkModule } from 'ngx-remark';
 import { sampleMarkdown } from './sample';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [AsyncPipe, RemarkModule, ReactiveFormsModule, PrismComponent, KatexComponent]
+  imports: [AsyncPipe, RemarkModule, ReactiveFormsModule,
+    PrismComponent, KatexComponent, MermaidComponent]
 })
 export class AppComponent {
 

@@ -160,6 +160,8 @@ Other plugins (such as [remark-directive](https://github.com/remarkjs/remark-dir
 
 Syntax highlighting for code blocks can be enabled by adding [Prismjs](https://prismjs.com/) to your project.
 
+#### Install Prism
+
 The simplest way to install Prism is by loading stylesheets and scripts from a CDN, for example:
 
 ```html
@@ -173,6 +175,8 @@ The simplest way to install Prism is by loading stylesheets and scripts from a C
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 ```
+
+#### Render code blocks
 
 With Prism globally loaded, you can add the `remark-prism` component as a template inside your `remark` component:
 
@@ -195,6 +199,8 @@ import { PrismComponent, RemarkModule } from 'ngx-remark';
 ```
 
 You can also nest `remark-prism` inside a more complex component or template (eg. including a "Copy to clipboard" button).
+
+Note that there is no need to customize the `processor`, as the component takes the raw code as an input.
 
 #### Advanced setup
 
@@ -249,6 +255,36 @@ import { RemarkModule, KatexComponent } from 'ngx-remark';
 
 In the example above, we make no difference between `math` and `inlineMath` element, but in practice they might require minor styling difference.
 
+### Mermaid diagrams
+
+[Mermaid](https://mermaid.js.org) is a JavaScript based diagramming and charting tool that uses Markdown-inspired text definitions and a renderer to create and modify complex diagrams.
+
+#### Install Mermaid
+
+The simplest way to install Mermaid is to load the library from a CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js"></script>
+```
+
+#### Render mermaid code blocks
+
+Add the provided `remark-mermaid` component inside your `remark` component. Mermaid diagrams are typically rendered within code blocks, so your Angular template might look like this:
+
+```html
+<remark [markdown]="markdown">
+  <ng-template [remarkTemplate]="'code'" let-node>
+    @if(node.lang === 'mermaid') {
+      <remark-mermaid [code]="node.value"/>
+    }
+    @else {
+      <remark-prism [code]="node.value" [language]="node.lang"/>
+    }
+  </ng-template>
+</remark>
+```
+
+Note that there is no need to customize the `processor`, as the component takes the raw mermaid code as an input.
 
 ## Custom Markdown syntax
 

@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^19.2.8",
     "@angular/router": "^19.2.8",
     "katex": "^0.16.22",
+    "mermaid": "^11.6.0",
     "prismjs": "^1.30.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",

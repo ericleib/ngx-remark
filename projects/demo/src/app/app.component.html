@@ -10,7 +10,7 @@
     <div class="col-6 h-100 d-flex flex-column pb-3">
 
       <div class="d-flex align-items-center">
-        <div class="form-check" title="Add syntax highlighting to code blocks with Prismjs">
+        <div class="form-check" title="Add syntax highlighting and Mermaid rendering to code blocks">
           <input class="form-check-input" type="checkbox" formControlName="codeHighlights" id="codeHighlights">
           <label class="form-check-label" for="codeHighlights">Code highlighting</label>
         </div>
@@ -45,10 +45,14 @@
           <remark [markdown]="state.markdown!" [processor]="state.processor">
 
             @if(state.codeHighlights) {
-              <remark-prism *remarkTemplate="'code'; let node"
-                [code]="node.value"
-                [language]="node.lang">
-              </remark-prism>
+              <ng-template [remarkTemplate]="'code'" let-node>
+                @if(node.lang === 'mermaid') {
+                  <remark-mermaid [code]="node.value"/>
+                }
+                @else {
+                  <remark-prism [code]="node.value" [language]="node.lang"/>
+                }
+              </ng-template>
             }
 
             @if(state.mathExpressions) {

@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import katex from 'katex';
 
 @Component({
   selector: 'remark-katex',
   template: `<span [innerHTML]="html()"></span>`,
-  standalone: true,
-  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KatexComponent {

@@ -78,4 +78,22 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement.querySelector('remark-katex') as HTMLElement;
     expect(compiled).toBeNull();
   });
+
+
+  it('should render mermaid', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-mermaid') as HTMLElement;
+    expect(compiled).toBeTruthy();
+  });
+
+  it('should NOT render mermaid', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.form.controls.codeHighlights.setValue(false);
+    await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement.querySelector('remark-mermaid');
+    expect(compiled).toBeNull();
+  });
 });

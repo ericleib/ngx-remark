@@ -15,8 +15,6 @@ declare namespace Prism {
   template: `
   <pre class="language-{{language()}}"><code class="language-{{language()}}" [innerHtml]="highlightedCode()"></code></pre>
   `,
-  standalone: true,
-  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PrismComponent {
