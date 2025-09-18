@@ -15,6 +15,7 @@ describe('AppComponent', () => {
   it('should NOT render table', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+    fixture.componentInstance.form.controls.codeHighlights.setValue(false); // Turn off code highlights to avoid prism error
     fixture.componentInstance.form.controls.useGfm.setValue(false);
     await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
     fixture.detectChanges();
@@ -72,6 +73,7 @@ describe('AppComponent', () => {
   it('should NOT render math', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+    fixture.componentInstance.form.controls.codeHighlights.setValue(false); // Turn off code highlights to avoid prism error
     fixture.componentInstance.form.controls.mathExpressions.setValue(false);
     await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
     fixture.detectChanges();
@@ -110,6 +112,7 @@ describe('AppComponent', () => {
   it('should NOT render custom headings', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+    fixture.componentInstance.form.controls.codeHighlights.setValue(false); // Turn off code highlights to avoid prism error
     fixture.componentInstance.form.controls.customHeadings.setValue(false);
     await new Promise((res) => setTimeout(() => res(true), 250)); // Need to wait because the form changes are throttled...
     fixture.detectChanges();

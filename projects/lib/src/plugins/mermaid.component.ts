@@ -20,8 +20,8 @@ export class MermaidComponent {
   sanitizer = inject(DomSanitizer);
 
   svg = resource({
-    request: () => ({code: this.code(), el: this.el()}),
-    loader: ({request: {code, el}}) => this.render(code, el),
+    params: () => ({code: this.code(), el: this.el()}),
+    loader: ({params: {code, el}}) => this.render(code, el),
     defaultValue: "loading"
   });
 

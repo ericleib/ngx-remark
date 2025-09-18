@@ -22,8 +22,8 @@ export class PrismComponent {
   language = input('');
 
   grammar = resource({
-    request: () => ({language: this.language()}),
-    loader: async ({request: {language}}) => {
+    params: () => ({language: this.language()}),
+    loader: async ({params: {language}}) => {
       if(language) {
         const grammar = Prism?.languages?.[language];
         if(grammar) {

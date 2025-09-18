@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, contentChildren, input, T
 import { Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { Processor, unified } from 'unified';
-import type { Compatible } from 'unified/lib';
+import type { Compatible } from 'vfile';
 import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
 
