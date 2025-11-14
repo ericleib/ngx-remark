@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import katex from 'katex';
+import type { KatexOptions } from "katex";
+
+declare namespace katex {
+  function renderToString(expr: string, options: KatexOptions): string;
+}
 
 @Component({
   selector: 'remark-katex',
@@ -14,7 +18,7 @@ import katex from 'katex';
 })
 export class KatexComponent {
   expr = input.required<string>();
-  options = input<katex.KatexOptions>({});
+  options = input<KatexOptions>({});
 
   html = computed(() => this.render());
 

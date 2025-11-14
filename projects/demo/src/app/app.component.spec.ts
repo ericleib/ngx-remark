@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import katex from 'katex';
+
+(window as any)['katex'] = katex;
 
 describe('AppComponent', () => {
 

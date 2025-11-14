@@ -331,7 +331,9 @@ The `id` is automatically generated from the heading text content.
 Math expressions can be rendered with [KaTeX](https://katex.org/).
 
 This requires four steps:
-- Install KaTeX in your project with `npm i katex remark-math`.
+- Install KaTeX in your project. Either:
+  - Load it from a CDN.
+  - Install it with `npm i katex remark-math` and make it available globally with `(window as any)['katex'] = katex;` (note: the ngx-remark library does not import the katex module to avoid making it a hard dependency).
 - Import the KaTeX stylesheet into your styles (or simply load it from a CDN)
 - Add the `remark-math` plugin to your processor with `processor.use(remarkMath)`
 - Render math expressions with the provided `remark-katex` component:
