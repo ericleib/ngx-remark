@@ -110,7 +110,7 @@ If the node type doesn't have children, the `[remarkNode]` directive isn't requi
 <remark [markdown]="markdownWithCodeBlocks">
 
   <my-code-editor *remarkTemplate="'code'; let node"
-    [code]="node.code"
+    [code]="node.value"
     [language]="node.lang">
   </my-code-editor>
 
@@ -123,7 +123,7 @@ You can customize various node types by adding as many templates as needed:
 <remark [markdown]="markdownWithCodeBlocks">
 
   <my-code-editor *remarkTemplate="'code'; let node"
-    [code]="node.code"
+    [code]="node.value"
     [language]="node.lang">
   </my-code-editor>
 
