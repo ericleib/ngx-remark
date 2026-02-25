@@ -33,7 +33,7 @@ describe('RemarkNodeComponent', () => {
     parentFixture.componentRef.setInput('markdown', '# Hello');
     parentFixture.detectChanges();
 
-    // Create an instance of RemarkNodeComponentInit for testing
+    // Create an instance of RemarkNodeComponent for testing
     spyOn(RemarkNodeComponent.prototype, 'ngOnInit');
     spyOn(RemarkNodeComponent.prototype, 'ngOnChanges');
     fixture = TestBed.createComponent(RemarkNodeComponent);
