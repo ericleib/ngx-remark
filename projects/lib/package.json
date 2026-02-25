@@ -1,6 +1,6 @@
 {
   "name": "ngx-remark",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": {
     "name": "Eric Leibenguth",
     "email": "eric.leibenguth@gmail.com",
@@ -8,7 +8,7 @@
     "github": "ericleib",
     "twitter": "EricLeibenguth"
   },
-  "description": "Angular component for rendering custom markdown using Remark",
+  "description": "Lightweight Angular component for rendering Markdown using Remark",
   "keywords": [
     "angular",
     "remark",
