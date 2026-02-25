@@ -1,11 +1,12 @@
 
-<!-- 
+<!--
   For each child, display its custom template or default one.
   Tracking by index means that DOM elements are reused even when the node type and content is different.
   Changes should still be reflected because of the @Input() node binding.
  -->
+@let templates = templateService.templates();
 @for (child of children(); track $index) {
-  <ng-container *ngTemplateOutlet="templates()[child.type] ?? defaultTpl; context: { $implicit: child , parent: node()}">
+  <ng-container *ngTemplateOutlet="templates[child.type] ?? defaultTpl; context: { $implicit: child , parent: node()}">
   </ng-container>
 }
 

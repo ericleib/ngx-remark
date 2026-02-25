@@ -1,18 +1,13 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RemarkNodeComponent } from './remark-node.component';
-import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkComponent } from './remark.component';
+import { RemarkModule } from './public-api';
 
 describe('RemarkComponent', () => {
   let component: RemarkComponent;
   let fixture: ComponentFixture<RemarkComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [RemarkComponent, RemarkNodeComponent, RemarkTemplateDirective]
-    });
     fixture = TestBed.createComponent(RemarkComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('markdown', "# Hello, world!");
@@ -37,7 +32,7 @@ describe('RemarkComponent', () => {
       }
     </remark>
   `,
-  standalone: false
+  imports: [RemarkModule]
 })
 class TestHostComponent {
   markdown = '# Hello world!';
@@ -50,9 +45,6 @@ describe('RemarkComponent with remarkTemplate', () => {
   let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestHostComponent, RemarkComponent, RemarkNodeComponent, RemarkTemplateDirective]
-    });
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -67,10 +59,10 @@ describe('RemarkComponent with remarkTemplate', () => {
     expect(compiled.querySelector('h1')).toBeFalsy();
     expect(compiled.querySelector('h6')?.textContent).toContain('Hello world!');
   });
-  
+
   it('should update text and add paragraph', () => {
     const el = fixture.nativeElement.querySelector('h6');
-    component.markdown = 
+    component.markdown =
 `# Hello there!
 This is a paragraph`;
     fixture.detectChanges();
@@ -83,7 +75,7 @@ This is a paragraph`;
 
   it('should modify the html', () => {
     const el = fixture.nativeElement.querySelector('h6');
-    component.markdown = 
+    component.markdown =
 `This is a paragraph
 # Hello there!`;
     fixture.detectChanges();
@@ -93,7 +85,7 @@ This is a paragraph`;
     expect(compiled.querySelector('h6')).not.toBe(el); // The element should not be reused because it is at a different position
     expect(compiled.querySelector('p')?.textContent).toContain('This is a paragraph');
   })
-  
+
   it('should render header with h6 and then not', () => {
     const compiled: HTMLElement = fixture.nativeElement;
     expect(compiled.querySelector('h1')).toBeFalsy();
@@ -103,7 +95,7 @@ This is a paragraph`;
     expect(compiled.querySelector('h6')).toBeFalsy();
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello world!');
   });
-  
+
   it('should render a list without paragraphs', () => {
     component.markdown = `
 - Hello
@@ -114,7 +106,7 @@ This is a paragraph`;
     expect(Array.from(compiled.querySelectorAll('li')).length).toBe(2);
     expect(Array.from(compiled.querySelectorAll('li > p')).length).toBe(0);
   });
-  
+
   it('should render a list item with children with a paragraph', () => {
     component.markdown = `
 - Hello
