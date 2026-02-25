@@ -60,7 +60,7 @@
         @for (cell of row.children; track $index; let i = $index) {
           <th
             [remarkNode]="cell"
-            [ngStyle]="{'text-align': node.align?.[i]}">
+            [style.text-align]="node.align?.[i]">
           </th>
         }
       </tr>
@@ -72,7 +72,7 @@
         @for (cell of $any(row).children; track $index; let i = $index) {
           <td
             [remarkNode]="cell"
-            [ngStyle]="{'text-align': node.align?.[i]}">
+            [style.text-align]="node.align?.[i]">
           </td>
         }
       </tr>

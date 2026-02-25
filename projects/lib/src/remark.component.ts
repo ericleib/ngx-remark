@@ -1,17 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, contentChildren, input, TemplateRef, viewChildren } from '@angular/core';
+import { JsonPipe } from '@angular/common';
 import { Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { Processor, unified } from 'unified';
 import type { Compatible } from 'vfile';
 import { RemarkTemplateDirective } from './remark-template.directive';
 import { RemarkTemplatesService } from './remark-templates.service';
+import { RemarkNodeComponent } from './remark-node.component';
 
 @Component({
   selector: 'remark',
   templateUrl: './remark.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RemarkTemplatesService],
-  standalone: false
+  imports: [JsonPipe, RemarkNodeComponent, RemarkTemplateDirective]
 })
 export class RemarkComponent {
   /** The markdown string to render */

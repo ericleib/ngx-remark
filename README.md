@@ -3,18 +3,18 @@
 
 # ngx-remark
 
-**ngx-remark** is a library that allows to render Markdown with custom Angular components and templates.
+**ngx-remark** is a lightweight library that renders Markdown using **native Angular components and templates**.
 
-Most libraries for rendering Markdown in Angular first transform the Markdown to HTML and then use the `innerHTML` attribute to render the HTML. The problem of this approach is that there is no way to use Angular components or directives in any part of the generated HTML.
+Most Markdown libraries for Angular convert the source to HTML and then bind it with `[innerHTML]`. The problem with this approach is that the resulting HTML lives outside Angular's component tree — you cannot use Angular components, directives, pipes, or dependency injection inside it.
 
-In contrast, this library uses [Remark](https://remark.js.org/) to parse the Markdown into an abstract syntax tree (AST) and then uses Angular to render the AST as HTML. The `<remark>` component renders all standard Markdown elements with default built-in templates, but it also allows to override the templates for any element.
+**ngx-remark** takes a different route. It uses [Remark](https://remark.js.org/) to parse Markdown into an AST, then renders that tree with real Angular templates. The `<remark>` component ships with clean default templates for every standard Markdown element, but **you can override any of them** with your own components.
 
 Typical use cases include:
 
-- Displaying code blocks with a custom code editor.
-- Displaying custom tooltips over certain elements.
-- Allowing custom actions with buttons or links.
-- Integration with Angular features, like the [`Router`](#router-integration).
+- Rendering code blocks with a full-featured editor (e.g. Monaco, CodeMirror)
+- Adding interactive tooltips, popovers, or badges on specific elements
+- Turning links or buttons into Angular-powered actions (routing, modals, etc.)
+- Deep integration with Angular features like the [`Router`](#router-integration), forms, or signals
 
 ## Demo
 
@@ -32,7 +32,7 @@ npm install ngx-remark remark
 
 ## Importing the library
 
-Import the `RemarkModule` in your standalone component or module:
+Import `RemarkModule` in your standalone component or module:
 
 ```typescript
 import { RemarkModule } from 'ngx-remark';
@@ -44,6 +44,8 @@ import { RemarkModule } from 'ngx-remark';
 })
 export class App { }
 ```
+
+Note: `RemarkModule` is a bundle of `RemarkComponent`, `RemarkNodeComponent` and `RemarkTemplateDirective`. You may also import these components individually, but in most cases you will need the three of them together.
 
 ## Usage
 

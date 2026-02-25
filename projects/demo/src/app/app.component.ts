@@ -37,7 +37,7 @@ export class AppComponent {
       if(state.mathExpressions) {
         processor = processor.use(remarkMath);
       }
-      return {processor, ...state}
+      return {processor, ...state};
     })
   )
 }
