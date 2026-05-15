@@ -174,9 +174,17 @@ This can be achieved in 3 steps:
 1. Create a plugin to insert a custom node after the last `text` node in the AST:
 
 ```ts
-processor.use(() => this.placeholderPlugin);
+import { Processor, unified } from 'unified';
+import remarkParse from 'remark-parse';
+import { visit, EXIT } from "unist-util-visit";
+import { Text, Parent } from "mdast";
+import { Node } from "unist";
 
-placeholderPlugin = (tree: Node) => {
+const processor = unified()
+  .use(remarkParse)
+  .use(() => placeholderPlugin);
+
+function placeholderPlugin(tree: Node) {
   visit(tree, "text", (node: Text, index: number, parent: Parent) => {
     parent.children.push({type: "cursor"} as any);
     return EXIT;
@@ -410,11 +418,17 @@ Option 3
 First, we create a custom processor that finds this syntax within the AST:
 
 ```typescript
-processor = unified()
-  .use(remarkParse)
-  .use(() => this.plugin);
+import { Processor, unified } from 'unified';
+import remarkParse from 'remark-parse';
+import { CONTINUE, visit } from "unist-util-visit";
+import { Text, Parent, Paragraph } from "mdast";
+import { Node } from "unist";
 
-plugin = (tree: Node) => {
+const processor = unified()
+  .use(remarkParse)
+  .use(() => plugin);
+
+function plugin(tree: Node) {
   visit(tree, 'paragraph', (node: Paragraph, index: number, parent: Parent) => {
     const firstChild = node.children[0];
     const lastChild = node.children.at(-1)!;
